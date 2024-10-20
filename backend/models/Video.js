@@ -24,11 +24,11 @@ const VideoSchema = new mongoose.Schema({
             type:String,
             required:true,
         },
-        ThumbailUrl:{
+        ThumbnailUrl:{
             type:String,
             required:true,
         },
-        ThumbailId:{
+        ThumbnailId:{
             type:String,
             required:true,
         },

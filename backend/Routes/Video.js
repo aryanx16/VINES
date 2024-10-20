@@ -30,8 +30,8 @@ VideoRouter.post("/",CheckAuth,async(req,res)=>{
             VideoUrl:UploadedVideo.secure_url,
             VideoId:UploadedVideo.public_id,
             Tags:req.body.Tags.split(","),
-            ThumbailUrl:UploadedThumbnail.secure_url,
-            ThumbailId:UploadedThumbnail.public_id,
+            ThumbnailUrl:UploadedThumbnail.secure_url,
+            ThumbnailId:UploadedThumbnail.public_id,
             Category:req.body.Category,
         })
         const CreatedVideo = await newvideo.save();
@@ -59,15 +59,15 @@ VideoRouter.put("/:VideoId",async(req,res)=>{
             return res.status(401).json({message:"You dont have acccess to edit this video"})
         }
         if(req.files){
-            await cloudinary.uploader.destroy(video.ThumbailId)
+            await cloudinary.uploader.destroy(video.ThumbnailId)
             const UpdatedThumbnail = await cloudinary.uploader.upload(req.files.Thumbnail.tempFilePath)
             const UpdatedData = {
                 Title:req.body.Title,
                 Description:req.body.Description,
                 Category:req.body.Category,
                 Tags:req.body.Tags.split(","),
-                ThumbailId:UpdatedThumbnail.public_id,
-                ThumbailUrl:UpdatedThumbnail.secure_url,  
+                ThumbnailId:UpdatedThumbnail.public_id,
+                ThumbnailUrl:UpdatedThumbnail.secure_url,  
             }
             console.log(UpdatedData)
             const UpdatedVideo = await Video.findByIdAndUpdate(VideoId,UpdatedData,{new:true})
@@ -88,8 +88,32 @@ VideoRouter.put("/:VideoId",async(req,res)=>{
         return res.status(401).json({message:"Token invalid"})
     }
 })
-VideoRouter.delete("/",(req,res)=>{
-    console.log("/upload working perfectly...")
+VideoRouter.delete("/:vid",async(req,res)=>{
+    try{
+        const video = await Video.findById(req.params.vid)
+        if(!video){
+            console.log("VIDEO NOT FOUND...")
+            return res.json({message:"VIDEO NOT FOUND"})
+        }
+        const token = await req.headers.authorization.split(" ")[1]
+        const verifyToken = await jwt.verify(token,process.env.jwtSecret)
+        if(!verifyToken){
+            return res.json({message:"INVALID TOKEN"})
+        }
+        console.log(verifyToken)
+        console.log(video)
+        // if(verifyToken._id != video.UserId){
+        //     return res.json({message:"YOU DONT HAVE ACCESS TO DELETE THIS VIDEO"})
+        // }
+        const deletedVideo = await cloudinary.uploader.destroy(video.VideoId,{resource_type:'video'})
+        const deletedThumbnail = await cloudinary.uploader.destroy(video.ThumbnailId,{resource_type:'image'})
+        const deletedVideoData = await Video.findByIdAndDelete(req.params.vid)
+        console.log(deletedVideoData);
+        console.log("/delte working perfectly...")
+    }catch(e){
+        console.log("ERROR WHILE DELETING THE VIDEO...",e)
+        return res.status(401).json({message:"ERROR WHILE DELETING VIDEO..."})
+    }
 })
 VideoRouter.get("/",(req,res)=>{
     console.log("/upload working perfectly...")
