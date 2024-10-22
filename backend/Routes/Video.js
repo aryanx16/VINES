@@ -115,8 +115,90 @@ VideoRouter.delete("/:vid",async(req,res)=>{
         return res.status(401).json({message:"ERROR WHILE DELETING VIDEO..."})
     }
 })
-VideoRouter.get("/",(req,res)=>{
-    console.log("/upload working perfectly...")
+VideoRouter.put("/like/:vid",async(req,res)=>{
+    try{
+        const token = req.headers.authorization.split(" ")[1]
+        console.log(token)
+        if(!token){
+            console.log("TOKEN ERROR WHILE LIKING THE VIDEO")
+            return res.json({message:"TOKEN ERROR WHILE LIKING THE VIDEO"})
+        }
+        const user =await jwt.verify(token,process.env.jwtSecret)
+        // console.log(user)
+        if(!user){
+            return res.json({message:"User not found"})
+        }
+        const video = await Video.findById(req.params.vid);
+        // console.log(video)
+        console.log(video.LikedBy)
+        const isLiked = video.LikedBy.includes(user._id)
+        const isDisliked = video.DislikedBy.includes(user._id)
+        console.log(isLiked)
+        if(!isLiked && !isDisliked){
+            video.LikedBy.push(user._id)
+            video.Likes+=1;
+        }else if(isDisliked){
+            video.DislikedBy = video.DislikedBy.filter(uid=>uid.toString()!==user._id.toString())
+            video.Dislikes-=1;
+            video.LikedBy.push(user._id)
+            video.Likes+=1;
+        }else if(isLiked){
+            video.LikedBy = video.LikedBy.filter(uid=>uid.toString()!== user._id.toString())
+            video.Likes-=1;
+        }
+        await video.save()
+        
+        console.log("likedby",video.LikedBy)
+        console.log("Dislikedby",video.DislikedBy)
+        console.log("/upload working perfectly...")
+    }catch(e){
+        console.log("ERROR WHILE LIKING THE VIDEO",e)
+        return res.json({message:"ERROR WHILE LIKING THE VIDEO"})
+    }
+})
+VideoRouter.put("/dislike/:vid",async(req,res)=>{
+    try{
+        const token = req.headers.authorization.split(" ")[1]
+        console.log(token)
+        if(!token){
+            console.log("TOKEN ERROR WHILE LIKING THE VIDEO")
+            return res.json({message:"TOKEN ERROR WHILE LIKING THE VIDEO"})
+        }
+        const user =await jwt.verify(token,process.env.jwtSecret)
+        // console.log(user)
+        if(!user){
+            return res.json({message:"User not found"})
+        }
+        const video = await Video.findById(req.params.vid);
+        // console.log(video)
+        console.log(video.LikedBy)
+        const isLiked = video.LikedBy.includes(user._id)
+        const isDisLiked = video.DislikedBy.includes(user._id)
+        console.log(isLiked)
+        console.log(isDisLiked)
+        if(!isLiked && !isDisLiked){
+            video.DislikedBy.push(user._id)
+            video.Dislikes+=1;
+        }
+        else if(isLiked){
+            video.LikedBy = video.LikedBy.filter(uid=>uid.toString()!== user._id.toString())
+            video.Likes-=1;
+            video.DislikedBy.push(user._id)
+            video.Dislikes+=1;
+        }else if(isDisLiked){
+            video.DislikedBy = video.DislikedBy.filter(uid=>uid.toString()!== user._id.toString())
+            video.Dislikes-=1;
+        }
+        
+        await video.save()
+        console.log("likedby",video.LikedBy)
+        console.log("Dislikedby",video.DislikedBy)
+        console.log(video.LikedBy)
+        console.log("/upload working perfectly...")
+    }catch(e){
+        console.log("ERROR WHILE LIKING THE VIDEO",e)
+        return res.json({message:"ERROR WHILE LIKING THE VIDEO"})
+    }
 })
 VideoRouter.get("/:id",(req,res)=>{
     console.log("/upload working perfectly...")

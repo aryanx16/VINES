@@ -75,9 +75,50 @@ ClientRouter.put("/profile",async(req,res)=>{
     console.log("/profile IS WORKING PERFECTLY...")
     
 })
-ClientRouter.post("/subscribe",async(req,res)=>{
-    res.send("/subscribe IS WORKING PERFECTLY...")
-    console.log("/subscribe IS WORKING PERFECTLY...")
+ClientRouter.post("/subscribe/:youtuberid",async(req,res)=>{
+    try{
+
+        const token = req.headers.authorization.split(" ")[1]
+        const userverify = await  jwt.verify(token,process.env.jwtSecret)
+        const user = await Client.findOne({_id:userverify._id})
+        if(!user || !token){
+            return res.json({message:"Please Login to Subscribe"})
+        }
+        const youtuberid = req.params.youtuberid
+        const youtuber = await Client.findOne({_id:youtuberid})
+        if(!youtuber){
+            console.log("Youtuber dosen't exist ")
+            return res.json({message:"Youtuber dosent exist"})
+        }
+        // console.log("youtuber",youtuber)
+        const alreadysub = youtuber.SubscribedBy.includes(user._id)
+        console.log("alreadysub : ",alreadysub)
+        if(alreadysub){
+            youtuber.SubscribedBy=youtuber.SubscribedBy.filter(id=>{user._id.toString()!== id.toString()})
+            console.log("Unsubscribed")
+            user.SubscribedChannels=user.SubscribedChannels.filter(id=>id.toString()!== youtuber._id.toString())
+            youtuber.Subscribers-=1;
+            await user.save()
+            await youtuber.save()
+            console.log("user", user)
+            console.log("youtuber",youtuber)
+            return res.json({message:"Unsubscribed"})
+        }else{
+            user.SubscribedChannels.push(youtuber._id)
+            youtuber.SubscribedBy.push(user._id)
+            youtuber.Subscribers+=1;
+            await youtuber.save();
+            await user.save();
+            console.log("user",user)
+            console.log("youtuber",youtuber)
+            return res.json({message:"Subscribed"})
+        }
+        
+        // console.log("/subscribe IS WORKING PERFECTLY...")
+    }catch(e){
+        console.log("ERROR WHILE SUBSCRIBING...",e)
+        return res.json({message:"ERROR WHILE SUBSCRIBING"})
+    }
 })
 
 module.exports=ClientRouter

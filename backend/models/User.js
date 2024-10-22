@@ -29,6 +29,7 @@ const ClientSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
+    SubscribedBy:[{type:mongoose.Schema.Types.ObjectId , ref:"Client"}],
     SubscribedChannels:[
         {
             type:mongoose.Schema.Types.ObjectId,
