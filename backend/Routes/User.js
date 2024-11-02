@@ -12,18 +12,16 @@ cloudinary.config({
     api_secret: process.env.API_SECRET,
 });
 ClientRouter.get("/",(req,res)=>{
-    // res.send("Client ROUTER IS WORKING PERFECTLY...")
     console.log("Client ROUTER IS WORKING PERFECTLY...")
+    res.send("Client ROUTER IS WORKING PERFECTLY...")
 })
 
 ClientRouter.post("/register",async(req,res)=>{
     try{
-        console.log(req.body);
         const ClientAlready = await Client.findOne({Email:req.body.Email})
-        console.log(ClientAlready)
         if(ClientAlready){
             console.log("This email is already in use")
-            return res.status(401).json({message:"User Already Exist! Please try another email"})
+            return res.status(401).json({message:"User Already Exist! Please try another email",})
         }
         const UploadedImage = await cloudinary.uploader.upload(req.files.logo.tempFilePath)
         const HashedPassword = await bcryptjs.hash(req.body.Password,10)
@@ -42,38 +40,71 @@ ClientRouter.post("/register",async(req,res)=>{
         console.log("/register IS WORKING PERFECTLY...")
     }
     catch(e){
-        return res.status(500).json("Error in register..."+e)
+        return res.status(500).json({message:"Error in register...",error:e})
     }
     
 })
 ClientRouter.post("/login",async(req,res)=>{
-    console.log("/login IS WORKING PERFECTLY...")
     try{
         const {Email,Password}=req.body;
         const isUser = await Client.findOne({Email:Email})
         if(!isUser){
-            console.log("User found");
+            console.log("USER NOT FOUND");
             return res.status(401).json("User not found")
         }
-        const CheckPassword = await bcryptjs.compare(req.body.Password,isUser.Password)
+        const CheckPassword = await bcryptjs.compare(Password,isUser.Password)
         if(!CheckPassword){
             console.log("INCORRECT PASSWORD")
             return res.status(401).json({message:"Incorrect Password"})
         }
         const token = jwt.sign({_id:isUser._id,Email:isUser.Email,ChannelName:isUser.ChannelName,Phone:isUser.Phone,LogoId:isUser.LogoId},process.env.jwtSecret)
-
         return res.json({token:token})
-        
     }   
     catch(e){
         console.log("ERROR IN /login ..."+e)
-        return res.status(500).json("ERROR IN /login..."+e)
+        return res.status(500).json({message:"Error in login ! Please try again",error:e})
     } 
 })
-ClientRouter.put("/profile",async(req,res)=>{
-    res.send("/profile IS WORKING PERFECTLY...")
-    console.log("/profile IS WORKING PERFECTLY...")
-    
+ClientRouter.put("/profile/:uid",async(req,res)=>{
+    const token = req.headers.authorization.split(" ")[1];
+    console.log(token);
+    const veriytoken = await jwt.verify(token,process.env.jwtSecret)
+    if(!veriytoken){
+        console.log("TOKEN MISSING")
+        return res.json({message:"TOKEN MISSING ! PLEASE LOG IN "})
+    }
+    const user = await Client.findOne({_id:veriytoken._id})
+    if(!user){
+        console.log("USER NOT EXIST")
+        return res.json({message:"USER NOT EXIST"})
+    }
+    // console.log(req.files)
+    if(req.files){
+        const deletedlogo = await cloudinary.uploader.destroy(user.LogoId);
+        const updatedlogo = await cloudinary.uploader.upload(req.files.logo.tempFilePath)
+        const UpdatedData = {
+            LogoUrl:updatedlogo.secure_url,
+            LogoId:updatedlogo.public_id,
+            ChannelName:req.body.ChannelName,
+            Email:req.body.Email,
+            Phone:req.body.Phone,
+            Password:req.body.Password,
+        }
+        const UpdatedProfile = await Client.findByIdAndUpdate(user._id,UpdatedData,{new:true})
+        console.log(UpdatedProfile)
+        return res.json({message:"PROFILE UPDATED!"})
+    }else{
+        const UpdatedData = {
+            ChannelName:req.body.ChannelName,
+            Email:req.body.Email,
+            Phone:req.body.Phone,
+            Password:req.body.Password,
+        }
+        const UpdatedProfile = await Client.findByIdAndUpdate(user._id,UpdatedData,{new:true})
+        console.log(UpdatedProfile)
+        return res.json({message:"PROFILE UPDATED!"})
+
+    }
 })
 ClientRouter.post("/subscribe/:youtuberid",async(req,res)=>{
     try{

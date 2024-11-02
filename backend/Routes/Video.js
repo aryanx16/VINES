@@ -200,14 +200,49 @@ VideoRouter.put("/dislike/:vid",async(req,res)=>{
         return res.json({message:"ERROR WHILE LIKING THE VIDEO"})
     }
 })
-VideoRouter.get("/:id",(req,res)=>{
+VideoRouter.put("/views/:vid",async(req,res)=>{
+    try{
+        const vid = req.params.vid;
+        const video = await Video.findById({_id:vid})
+        if(!video){
+            return res.json("VIDEO NOT FOUND")
+        }
+        console.log(video);
+        video.Views+=1;
+        await video.save();
+        console.log(video);
+        res.send("Found")
+    }catch(e){
+        console.log("ERROR IN VIEWS API ... "+e);
+        res.send("ERROR IN VIEWS")
+    }
+    console.log("/upload working perfectly...")
+})
+VideoRouter.get("/all",async(req,res)=>{
+    try{
+
+        const AllVideos = await Video.find({})
+        console.log(AllVideos)
+        res.send(AllVideos)
+    }
+    catch{
+        console.log("ERROR IN WHILE FETCHING VIDEOS...",e);
+        res.send('ERROR IN FETCHING VIDEOS...');
+    }
+})
+VideoRouter.get("/tags/:tags",async(req,res)=>{
+    try{
+        const tags= req.params.tags;
+        const VideosByCategory  = await Video.find({Tags:{$in:tags}})
+        console.log(VideosByCategory)
+    }catch(e){
+        console.log("ERROR IN FETCHING VIDEOS BY CATEGORY",e)
+        return res.json({message:"ERROR IN FETCHING VIDEOS BY CATEGORY"})
+    }
     console.log("/upload working perfectly...")
 })
 VideoRouter.get("/:category",(req,res)=>{
-    console.log("/upload working perfectly...")
-})
-VideoRouter.get("/:tags",(req,res)=>{
-    console.log("/upload working perfectly...")
+    console.log("/upload working perfectly...",e)
 })
 
 module.exports = VideoRouter
