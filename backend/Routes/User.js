@@ -50,7 +50,7 @@ ClientRouter.post("/login",async(req,res)=>{
         const isUser = await Client.findOne({Email:Email})
         if(!isUser){
             console.log("USER NOT FOUND");
-            return res.status(401).json("User not found")
+            return res.status(401).json({message:"User not found"})
         }
         const CheckPassword = await bcryptjs.compare(Password,isUser.Password)
         if(!CheckPassword){

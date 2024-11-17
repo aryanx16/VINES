@@ -6,11 +6,11 @@ const CheckAuth = require("../middleware/CheckAuth");
 const Video = require("../models/Video");
 CommentRouter.get("/",async(req,res)=>{
     try{
-        res.json("COMMENT FETCHED SUCCESSFULLY..")
+        res.json({message:"COMMENT FETCHED SUCCESSFULLY.."})
         console.log("/comment is running perfectly")
     }catch(e){
         console.log("ERROR IN ",e)
-        return res.status(401).json("ERROR IN COMMENT")
+        return res.status(401).json({message:"ERROR IN COMMENT"})
     }
 })
 CommentRouter.get("/:vid",async(req,res)=>{
@@ -19,7 +19,7 @@ CommentRouter.get("/:vid",async(req,res)=>{
         const isVideo = await Video.findOne({_id:VideoId})
         if(!isVideo){
             console.log("VIDEO NOT FOUND");
-            return res.status(301).json("VIDEO NOT FOUND");
+            return res.status(301).json({message:"VIDEO NOT FOUND"});
         }
         const Comments = await Comment.find({VideoId:VideoId})
         console.log(Comments)
@@ -51,11 +51,11 @@ CommentRouter.post("/:vid",CheckAuth,async(req,res)=>{
         const AddedComment = await NewComment.save()
         console.log("Comment",AddedComment)
         // console.log(CommentText)
-        res.json("COMMENT FETCHED SUCCESSFULLY..")
         console.log("/comment is running perfectly")
+        res.json({message:"COMMENT FETCHED SUCCESSFULLY.."})
     }catch(e){
         console.log("ERROR IN ",e)
-        return res.status(401).json("ERROR IN COMMENT")
+        return res.status(401).json({message:"ERROR IN COMMENT"})
     }
 })
 CommentRouter.put("/:cid",CheckAuth, async(req,res)=>{
@@ -74,7 +74,7 @@ CommentRouter.put("/:cid",CheckAuth, async(req,res)=>{
     const SameUser = (isUser._id===IsComment.UserId.toString());
     if(!SameUser){
         console.log("YOU CANT EDIT")
-        return res.status(300).json({message:"YOU CANT EDIT"})
+        return res.status(300).json({message:"YOU CAN'T EDIT"})
     }
     const UpdatedComment = req.body.CommentText;
     if(!UpdatedComment){

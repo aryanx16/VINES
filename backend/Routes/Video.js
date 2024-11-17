@@ -205,7 +205,7 @@ VideoRouter.put("/views/:vid",async(req,res)=>{
         const vid = req.params.vid;
         const video = await Video.findById({_id:vid})
         if(!video){
-            return res.json("VIDEO NOT FOUND")
+            return res.json({message:"VIDEO NOT FOUND"})
         }
         console.log(video);
         video.Views+=1;
@@ -227,7 +227,7 @@ VideoRouter.get("/all",async(req,res)=>{
     }
     catch{
         console.log("ERROR IN WHILE FETCHING VIDEOS...",e);
-        res.send('ERROR IN FETCHING VIDEOS...');
+        res.send({message:'ERROR IN FETCHING VIDEOS...'});
     }
 })
 VideoRouter.get("/tags/:tags",async(req,res)=>{
