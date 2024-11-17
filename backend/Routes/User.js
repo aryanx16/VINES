@@ -58,7 +58,7 @@ ClientRouter.post("/login",async(req,res)=>{
             return res.status(401).json({message:"Incorrect Password"})
         }
         const token = jwt.sign({_id:isUser._id,Email:isUser.Email,ChannelName:isUser.ChannelName,Phone:isUser.Phone,LogoId:isUser.LogoId},process.env.jwtSecret)
-        return res.json({token:token})
+        return res.json({token:token , message:"Logged in successfully"})
     }   
     catch(e){
         console.log("ERROR IN /login ..."+e)
