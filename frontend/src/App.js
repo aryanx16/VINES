@@ -9,6 +9,7 @@ import Signin from './pages/Signin';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
+import UploadVid from './pages/UploadVid';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     element: <Signup/>,
   },
   {path:"/home",element:<Home/>,},
+  {path:"/upload",element:<UploadVid/>}
 ]);
 function App() {
   return (

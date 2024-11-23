@@ -38,10 +38,11 @@ VideoRouter.post("/",CheckAuth,async(req,res)=>{
         console.log(CreatedVideo);
         // console.log(UploadedThumbnail)
         // console.log(UploadedVideo)
+        return res.json({message:"Vidoe Uploaded successfully!"})
         console.log("/upload working perfectly...")
     }catch(e){
-        console.log("ERROR IN UPLOADIND VIDEO..."+e.message)
-        return res.status(400).json({message:"ERROR IN UPLOADING VIDEO..."})
+        console.log("ERROR IN UPLOADIND VIDEO..."+e)
+        return res.status(400).json({message:"ERROR IN UPLOADING VIDEO...",error:e})
     }
 })
 VideoRouter.put("/:VideoId",async(req,res)=>{
