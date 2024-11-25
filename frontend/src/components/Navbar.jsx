@@ -7,7 +7,7 @@ const Navbar = () => {
     const logoUrl = localStorage.getItem("logoUrl")
     const navigate = useNavigate()
     const location = useLocation()
-    // console.log(location)
+    console.log(location)
     return (
         <div className='bg-bgray'>
             {/* Sidebar */}
@@ -42,7 +42,7 @@ const Navbar = () => {
                     }
                     {/* </div> */}
                     <ul className="mt-4 text-white cursor-pointer">
-                        <li className={`p-4 rounded-md m-1 hover:bg-gray-700 ${location.pathname==='/home'? 'bg-gray-700':''}`}>Home</li>
+                        <li className={`p-4 rounded-md m-1 hover:bg-gray-700 ${location.pathname==='/Home'? 'bg-gray-700':''}`}>Home</li>
                         <li className={`p-4 rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/subscriptions'? 'bg-gray-700':''} `}>Subscriptions</li>
                         <li className={`p-4 rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/about'? 'bg-gray-700':''}`}>About</li>
                         <li className={`p-4 rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/logout'? 'bg-gray-700':''} `}>Logout</li>

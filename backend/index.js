@@ -8,16 +8,18 @@ const VideoRouter = require("./Routes/Video")
 const CommentRouter = require("./Routes/Comment")
 const cors = require("cors")
 const app = express()
+
 app.use(cors())
 require("dotenv").config()
 connectWdb();//DATABASE
 app.listen(3000,()=>{
     console.log("listening...")
 })
-app.use(bodyparser.json())
+app.use(bodyparser.json({limit:'50mb'}))
 app.use(fileUpload({
     useTempFiles : true,
-    tempFileDir : '/tmp/'
+    tempFileDir : '/tmp/',
+    limits: { fileSize: 50 * 1024 * 1024 }
 }));
 //----------------USER MIDDLEWARE--------------
 app.use("/user",userRouter)

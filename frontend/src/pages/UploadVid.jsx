@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { Hourglass } from 'react-loader-spinner'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
 const UploadVid = () => {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+    const navigate = useNavigate()
     const [title ,setTitle]=useState("")
     const [desc,setDesc]=useState("")
     const [category,setCategory]=useState("")
@@ -43,23 +44,43 @@ const UploadVid = () => {
             }).then((response)=>{
                 toast.success(response.data.message)
                 console.log("video uploaded")
+                navigate("/home")
             }).catch((e)=>{
-                console.log(e)
-                toast.error(e.response.data.message);
+                console.log("kfjdkf",e)
+                toast.error(e.response.data.error.message);
+                setLoading(false)
             })
         }catch(e){
             console.log("Error in uploading video",e)
-            // toast.error(e.response.data.message)
+            toast.error(e.response.data.message)
+            setLoading(false)
         }
     }
     function handlethumbnail(e){
-        console.log(e.target.files[0]);
-        setThumbnail(e.target.files[0])
-        setThumbnailUrl(URL.createObjectURL(e.target.files[0]))
+        try{
+
+            console.log(e.target.files[0]);
+            setThumbnail(e.target.files[0])
+            setThumbnailUrl(URL.createObjectURL(e.target.files[0]))
+        }catch(e){
+            toast.error("Please select another thumbnail!")
+        }
     }
     function handlevideo(e){
-        setVideo(e.target.files[0])
-        setVideourl(URL.createObjectURL(e.target.files[0]))
+        try{
+
+            const filesize = e.target.files[0].size;
+            setVideo(e.target.files[0])
+            console.log(e)
+            setVideourl(URL.createObjectURL(e.target.files[0]))
+            if(filesize>40*1024*1024){
+                toast.info("Please select a video less than 4mb")
+                setVideourl("")
+                setVideo("") 
+            }
+        }catch(e){
+            toast.error("Please select another video!")
+        }
     }
   return (
     <div className=" text-white h-screen min-w-full flex flex-col bg-bgray transition-all duration-1000">
@@ -83,7 +104,7 @@ const UploadVid = () => {
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <label required htmlFor="video" className="bg-neutral-100  text-black h-fit font-semibold shadow-2xl rounded-md p-1 w-44 cursor-pointer hover:bg-slate-200 w-fit ">Select Video</label>
                                     {videourl && <video src={videourl} className="w-32  p-1 h-32 object-contain border-2 bg-secondary border-bordcol rounded-md " alt="Preview" />}
-                                    <input id="video" onChange={handlevideo} className="bg-secondary hidden  border-bordcol border shadow-2xl rounded-md p-1 " type="file" />
+                                    <input id="video" onChange={handlevideo}  className="bg-secondary hidden  border-bordcol border shadow-2xl rounded-md p-1 " type="file" />
                                 </div>
                                 <div>
                                     <button type="submit" className="bg-white  text-black font-semibold  border-bordcol border shadow-2xl rounded-md p-1 w-80 sm:w-[500px] hover:bg-slate-200 transition-all duration-200"><div className="flex justify-center items-center gap-2"> Submit
