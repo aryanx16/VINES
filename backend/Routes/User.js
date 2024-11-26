@@ -2,7 +2,7 @@ const express = require("express")
 const cloudinary = require("cloudinary").v2
 const mongoose = require("mongoose")
 const bcryptjs = require("bcryptjs")
-const Client = require("../models/User")
+const User = require("../models/User")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const ClientRouter = express.Router();
@@ -12,20 +12,20 @@ cloudinary.config({
     api_secret: process.env.API_SECRET,
 });
 ClientRouter.get("/", (req, res) => {
-    console.log("Client ROUTER IS WORKING PERFECTLY...")
-    res.send("Client ROUTER IS WORKING PERFECTLY...")
+    console.log("User ROUTER IS WORKING PERFECTLY...")
+    res.send("User ROUTER IS WORKING PERFECTLY...")
 })
 
 ClientRouter.post("/register", async (req, res) => {
     try {
-        const ClientAlready = await Client.findOne({ Email: req.body.Email })
+        const ClientAlready = await User.findOne({ Email: req.body.Email })
         if (ClientAlready) {
             console.log("This email is already in use")
             return res.status(401).json({ message: "User Already Exist! Please try another email", })
         }
         const UploadedImage = await cloudinary.uploader.upload(req.files.logo.tempFilePath)
         const HashedPassword = await bcryptjs.hash(req.body.Password, 10)
-        const NewClient = new Client({
+        const NewClient = new User({
             _id: new mongoose.Types.ObjectId,
             ChannelName: req.body.ChannelName,
             Phone: req.body.Phone,
@@ -47,7 +47,7 @@ ClientRouter.post("/register", async (req, res) => {
 ClientRouter.post("/login", async (req, res) => {
     try {
         const { Email, Password } = req.body;
-        const isUser = await Client.findOne({ Email: Email })
+        const isUser = await User.findOne({ Email: Email })
         if (!isUser) {
             console.log("USER NOT FOUND");
             return res.status(401).json({ message: "User not found" })
@@ -84,7 +84,7 @@ ClientRouter.put("/profile/:uid", async (req, res) => {
         console.log("TOKEN MISSING")
         return res.json({ message: "TOKEN MISSING ! PLEASE LOG IN " })
     }
-    const user = await Client.findOne({ _id: veriytoken._id })
+    const user = await User.findOne({ _id: veriytoken._id })
     if (!user) {
         console.log("USER NOT EXIST")
         return res.json({ message: "USER NOT EXIST" })
@@ -101,7 +101,7 @@ ClientRouter.put("/profile/:uid", async (req, res) => {
             Phone: req.body.Phone,
             Password: req.body.Password,
         }
-        const UpdatedProfile = await Client.findByIdAndUpdate(user._id, UpdatedData, { new: true })
+        const UpdatedProfile = await User.findByIdAndUpdate(user._id, UpdatedData, { new: true })
         console.log(UpdatedProfile)
         return res.json({ message: "PROFILE UPDATED!" })
     } else {
@@ -111,7 +111,7 @@ ClientRouter.put("/profile/:uid", async (req, res) => {
             Phone: req.body.Phone,
             Password: req.body.Password,
         }
-        const UpdatedProfile = await Client.findByIdAndUpdate(user._id, UpdatedData, { new: true })
+        const UpdatedProfile = await User.findByIdAndUpdate(user._id, UpdatedData, { new: true })
         console.log(UpdatedProfile)
         return res.json({ message: "PROFILE UPDATED!" })
 
@@ -122,12 +122,12 @@ ClientRouter.post("/subscribe/:youtuberid", async (req, res) => {
 
         const token = req.headers.authorization.split(" ")[1]
         const userverify = await jwt.verify(token, process.env.jwtSecret)
-        const user = await Client.findOne({ _id: userverify._id })
+        const user = await User.findOne({ _id: userverify._id })
         if (!user || !token) {
             return res.json({ message: "Please Login to Subscribe" })
         }
         const youtuberid = req.params.youtuberid
-        const youtuber = await Client.findOne({ _id: youtuberid })
+        const youtuber = await User.findOne({ _id: youtuberid })
         if (!youtuber) {
             console.log("Youtuber dosen't exist ")
             return res.json({ message: "Youtuber dosent exist" })

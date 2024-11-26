@@ -45,6 +45,19 @@ VideoRouter.post("/",CheckAuth,async(req,res)=>{
         return res.status(400).json({message:"ERROR IN UPLOADING VIDEO...",error:e})
     }
 })
+VideoRouter.get("/ownvideos",CheckAuth,async(req,res)=>{
+    try{
+        const token = req.headers.authorization.split(" ")[1]
+        const user = await jwt.verify(token,process.env.jwtSecret)
+        console.log("==========================================")
+        const videos =await Video.find({UserId:user._id}).populate('UserId')
+        return res.json({videos:videos})
+        console.log(videos)
+    }catch(e){
+        console.log(e)
+        return res.json({message:"Unable to fetch videos"})
+    }
+})
 VideoRouter.put("/:VideoId",async(req,res)=>{
     try{
         const VideoId = req.params.VideoId;
@@ -245,5 +258,7 @@ VideoRouter.get("/tags/:tags",async(req,res)=>{
 VideoRouter.get("/:category",(req,res)=>{
     console.log("/upload working perfectly...",e)
 })
+
+
 
 module.exports = VideoRouter

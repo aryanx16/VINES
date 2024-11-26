@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const ClientSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     _id:mongoose.Schema.Types.ObjectId,
     ChannelName:{
         type:String,
@@ -29,13 +29,13 @@ const ClientSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
-    SubscribedBy:[{type:mongoose.Schema.Types.ObjectId , ref:"Client"}],
+    SubscribedBy:[{type:mongoose.Schema.Types.ObjectId , ref:"User"}],
     SubscribedChannels:[
         {
             type:mongoose.Schema.Types.ObjectId,
-            ref:"Client",
+            ref:"User",
         }
     ]
 },{timestamps:true})
 
-module.exports = mongoose.model("Client",ClientSchema)
+module.exports = mongoose.model("User",UserSchema)

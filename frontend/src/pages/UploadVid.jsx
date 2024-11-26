@@ -47,7 +47,7 @@ const UploadVid = () => {
                 navigate("/home")
             }).catch((e)=>{
                 console.log("kfjdkf",e)
-                toast.error(e.response.data.error.message);
+                toast.error(e.response.data.message);
                 setLoading(false)
             })
         }catch(e){
@@ -58,7 +58,6 @@ const UploadVid = () => {
     }
     function handlethumbnail(e){
         try{
-
             console.log(e.target.files[0]);
             setThumbnail(e.target.files[0])
             setThumbnailUrl(URL.createObjectURL(e.target.files[0]))
