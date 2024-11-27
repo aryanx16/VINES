@@ -10,6 +10,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import UploadVid from './pages/UploadVid';
+import Myvideos from './pages/Myvideos';
+import Subscriptions from './pages/Subscriptions';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,7 +26,9 @@ const router = createBrowserRouter([
     element: <Signup/>,
   },
   {path:"/home",element:<Home/>,},
-  {path:"/upload",element:<UploadVid/>}
+  {path:"/upload",element:<UploadVid/>},
+  {path:"/myvideos",element:<Myvideos/>},
+  {path:"/subscriptions",element:<Subscriptions/>},
 ]);
 function App() {
   return (

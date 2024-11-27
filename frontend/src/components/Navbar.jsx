@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [sidebar, setSidebar] = useState(false);
-    const logoUrl = localStorage.getItem("logoUrl")
+    const [logoUrl,setlogoUrl] = useState(localStorage.getItem("logoUrl"))
+    // const logoUrl = localStorage.getItem("logoUrl")
     const navigate = useNavigate()
     const location = useLocation()
     console.log(location)
+    function handlelogout(){
+        localStorage.setItem("token","")
+        setlogoUrl("")
+        localStorage.setItem("ChannelName","")
+        localStorage.setItem("logoUrl","")
+        toast.success("Logged out")
+    }
     return (
-        <div className='bg-bgray'>
+        <div className='bg-bgray text-white '>
             {/* Sidebar */}
             <div
                 className={`fixed top-0 z-10 bg-secondary h-full w-36 transform transition-transform duration-300 ${sidebar ? 'translate-x-0' : '-translate-x-full'
@@ -28,7 +37,7 @@ const Navbar = () => {
                         (<div className='flex justify-center items-center flex-col'>
 
                         <img className='h-32 w-32 border border-bordcol rounded-full object-contain' src={localStorage.getItem("logoUrl")} alt="" />
-                        <h3 className='font-mono bg-bordcol px-2 max-w-32 overflow-hidden rounded-full mt-1 '>{localStorage.getItem("channelName")}</h3>
+                        <h3 className='font-mono bg-bordcol  px-2 max-w-32 overflow-hidden rounded-full mt-1 '>{localStorage.getItem("channelName")}</h3>
                         </div>
                         
                         ) : (<div className="h-32 w-32 border-2 border-bordcol rounded-full flex items-center justify-center ">
@@ -42,10 +51,13 @@ const Navbar = () => {
                     }
                     {/* </div> */}
                     <ul className="mt-4 text-white cursor-pointer">
-                        <li className={`p-4 rounded-md m-1 hover:bg-gray-700 ${location.pathname==='/Home'? 'bg-gray-700':''}`}>Home</li>
-                        <li className={`p-4 rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/subscriptions'? 'bg-gray-700':''} `}>Subscriptions</li>
-                        <li className={`p-4 rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/about'? 'bg-gray-700':''}`}>About</li>
-                        <li className={`p-4 rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/logout'? 'bg-gray-700':''} `}>Logout</li>
+                        <li onClick={()=>{navigate("/home")}} className={`p-4 font-mono rounded-md m-1 hover:bg-gray-700 ${location.pathname==='/home'? 'bg-gray-800':''}`}>Home</li>
+                        <li onClick={()=>{navigate("/subscriptions")}} className={`p-4   rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/subscriptions'? 'bg-gray-800':''} `}>Subscriptions</li>
+                        <li onClick={()=>{navigate("/myvideos")}} className={`p-4 font-mono rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/myvideos'? 'bg-gray-800':''} `}>My Videos</li>
+                        <li onClick={()=>{navigate("/about")}} className={`p-4 font-mono rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/about'? 'bg-gray-800':''}`}>About</li>
+                        {logoUrl?
+                        <li onClick={handlelogout} className={`p-4 rounded-md  hover:bg-gray-800  hover:text-red-600 text-red-500 font-semibold font-mono m-1 ${location.pathname==='/logout'? 'bg-gray-700':''} `}>Logout</li>
+                    :    <li onClick={()=>{navigate("/signup")}} className={`p-4 rounded-md hover:bg-gray-700 m-1 ${location.pathname==='/register'? 'bg-gray-700':''} `}>Signup</li>}
                     </ul></div>
             </div>
 
@@ -62,7 +74,7 @@ const Navbar = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>
                             </div>
-                            <div className="text-2xl font-semibold">Vines</div>
+                            <div className="text-3xl font-semibold font-mono">Vines</div>
                         </div>
                     )}
 

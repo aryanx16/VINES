@@ -46,7 +46,7 @@ const UploadVid = () => {
                 console.log("video uploaded")
                 navigate("/home")
             }).catch((e)=>{
-                console.log("kfjdkf",e)
+                console.log("kfjdkf",e.response)
                 toast.error(e.response.data.message);
                 setLoading(false)
             })

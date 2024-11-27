@@ -235,7 +235,7 @@ VideoRouter.put("/views/:vid",async(req,res)=>{
 VideoRouter.get("/all",async(req,res)=>{
     try{
 
-        const AllVideos = await Video.find({})
+        const AllVideos = await Video.find({}).populate('UserId')
         console.log(AllVideos)
         res.send(AllVideos)
     }
@@ -258,6 +258,7 @@ VideoRouter.get("/tags/:tags",async(req,res)=>{
 VideoRouter.get("/:category",(req,res)=>{
     console.log("/upload working perfectly...",e)
 })
+
 
 
 

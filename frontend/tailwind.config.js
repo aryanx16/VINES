@@ -10,6 +10,7 @@ module.exports = {
         secondary:"rgb(13, 17, 23)",
         bordcol:"rgb(60, 67, 77)",
         sidebar:"rgb(15, 15, 15)",
+        gitsecondary:"rgb(33, 40, 48)",
       }
     },
   },
