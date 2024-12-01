@@ -17,7 +17,7 @@ const UploadVid = () => {
     const [videourl , setVideourl] = useState("")
     const [thumbnail,setThumbnail] = useState("")
     const [thumbnailUrl , setThumbnailUrl] = useState("")
-     function handleSubmit(e){
+     async function handleSubmit(e){
         e.preventDefault();
         setLoading(true);
         if(!thumbnailUrl){
@@ -37,23 +37,26 @@ const UploadVid = () => {
             formdata.append("Thumbnail",thumbnail)
             formdata.append("Video",video)
 
-            axios.post(`${BACKEND_URL}/video`,formdata,{
-                headers:{
-                    Authorization:`Bearer ${localStorage.getItem("token")}`
-                }
-            }).then((response)=>{
-                toast.success(response.data.message)
-                console.log("video uploaded")
-                navigate("/home")
-            }).catch((e)=>{
-                console.log("kfjdkf",e.response)
-                toast.error(e.response.data.message);
-                setLoading(false)
-            })
-        }catch(e){
-            console.log("Error in uploading video",e)
-            toast.error(e.response.data.message)
-            setLoading(false)
+            const response = await axios.post(`${BACKEND_URL}/video`, formdata, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+    
+            // Handle success response
+            toast.success(response.data.message);
+            console.log("Video uploaded successfully");
+            navigate("/home");
+        }catch (error) {
+            // Handle errors
+            console.error("Error uploading video:", error?.response || error);
+            if (error?.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("Error! Please try again.");
+            }
+        } finally {
+            setLoading(false); // Ensure loading is stopped regardless of success or failure
         }
     }
     function handlethumbnail(e){
@@ -82,7 +85,7 @@ const UploadVid = () => {
         }
     }
   return (
-    <div className=" text-white h-screen min-w-full flex flex-col bg-bgray transition-all duration-1000">
+    <div className=" text-white h-screen min-w-full flex flex-col bg-gradient-to-r from-bgray via-neutral-900 to-black transition-all duration-1000">
                 <Navbar/>
                 <div className="flex-1 flex justify-center items-center   ">
 
@@ -103,7 +106,7 @@ const UploadVid = () => {
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <label required htmlFor="video" className="bg-neutral-100  text-black h-fit font-semibold shadow-2xl rounded-md p-1 w-44 cursor-pointer hover:bg-slate-200 w-fit ">Select Video</label>
                                     {videourl && <video src={videourl} className="w-32  p-1 h-32 object-contain border-2 bg-secondary border-bordcol rounded-md " alt="Preview" />}
-                                    <input id="video" onChange={handlevideo}  className="bg-secondary hidden  border-bordcol border shadow-2xl rounded-md p-1 " type="file" />
+                                    <input id="video"  onChange={handlevideo}  className="bg-secondary hidden  border-bordcol border shadow-2xl rounded-md p-1 " type="file" />
                                 </div>
                                 <div>
                                     <button type="submit" className="bg-white  text-black font-semibold  border-bordcol border shadow-2xl rounded-md p-1 w-80 sm:w-[500px] hover:bg-slate-200 transition-all duration-200"><div className="flex justify-center items-center gap-2"> Submit

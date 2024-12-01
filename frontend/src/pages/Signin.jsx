@@ -38,7 +38,7 @@ const Signin = () => {
         console.log(e)
         console.log("IN CSTCHHHHh")
         setloading(false)
-        toast.error(e.response.data.message)
+        toast.error(e.response?.data?.message || "Please try again")
       })
     }catch(e){
       toast.error("Please try again!")
@@ -47,7 +47,7 @@ const Signin = () => {
   }
   return (
     <>
-      <div className=" text-white h-screen min-w-full flex flex-col bg-bgray transition-all duration-1000">
+      <div className=" text-white h-screen min-w-full flex flex-col bg-gradient-to-r from-bgray via-neutral-900 to-black transition-all duration-1000">
         <Navbar />
         <div className="flex-1 flex justify-center items-center   ">
           <div className="flex items-center flex-col">

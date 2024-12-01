@@ -11,6 +11,24 @@ cloudinary.config({
     api_key:process.env.API_KEY , 
     api_secret: process.env.API_SECRET,
 })
+
+// VideoRouter.get("/subscribed")
+VideoRouter.get("/fullvideo/:vid",async(req,res)=>{
+    try{
+
+        const vid = req.params.vid
+        console.log("video idddd ",vid)
+        const video =await Video.findById(vid).populate('UserId')
+        console.log("KDJFKF")
+        if(!video){
+            return res.json({message:"Video not found"})
+        }
+        return res.json({video:video})
+    }catch(e){
+        console.log(e)
+        return res.json({message:"Error in video"})
+    }
+})
 VideoRouter.post("/",CheckAuth,async(req,res)=>{
     try{
         const token = req.headers.authorization.split(" ")[1]
@@ -35,11 +53,7 @@ VideoRouter.post("/",CheckAuth,async(req,res)=>{
             Category:req.body.Category,
         })
         const CreatedVideo = await newvideo.save();
-        console.log(CreatedVideo);
-        // console.log(UploadedThumbnail)
-        // console.log(UploadedVideo)
         return res.json({message:"Vidoe Uploaded successfully!"})
-        console.log("/upload working perfectly...")
     }catch(e){
         console.log("ERROR IN UPLOADIND VIDEO..."+e)
         return res.status(400).json({message:"ERROR IN UPLOADING VIDEO...",error:e})
@@ -49,10 +63,8 @@ VideoRouter.get("/ownvideos",CheckAuth,async(req,res)=>{
     try{
         const token = req.headers.authorization.split(" ")[1]
         const user = await jwt.verify(token,process.env.jwtSecret)
-        console.log("==========================================")
         const videos =await Video.find({UserId:user._id}).populate('UserId')
         return res.json({videos:videos})
-        console.log(videos)
     }catch(e){
         console.log(e)
         return res.json({message:"Unable to fetch videos"})
@@ -67,7 +79,6 @@ VideoRouter.put("/:VideoId",async(req,res)=>{
         if(!video){
             return res.json({message:"Video not found"})
         }
-        console.log(video)
         if(user._id!=video.UserId){
             console.log("USER DOSENT HAVE ACCESS TO EDIT THIS VIDEO")
             return res.status(401).json({message:"You dont have acccess to edit this video"})
@@ -83,9 +94,7 @@ VideoRouter.put("/:VideoId",async(req,res)=>{
                 ThumbnailId:UpdatedThumbnail.public_id,
                 ThumbnailUrl:UpdatedThumbnail.secure_url,  
             }
-            console.log(UpdatedData)
             const UpdatedVideo = await Video.findByIdAndUpdate(VideoId,UpdatedData,{new:true})
-            console.log(UpdatedVideo)
         }else{
             const UpdatedData = {
                 Title:req.body.Title,
@@ -94,7 +103,6 @@ VideoRouter.put("/:VideoId",async(req,res)=>{
                 Tags:req.body.Tags.split(","),
             }
             const UpdatedVideo = await Video.findByIdAndUpdate(req.params.VideoId,UpdatedData)
-            console.log(UpdatedVideo)
         }
         console.log("/upload working perfectly...")
     }catch(e){
@@ -104,11 +112,17 @@ VideoRouter.put("/:VideoId",async(req,res)=>{
 })
 VideoRouter.delete("/:vid",async(req,res)=>{
     try{
+        console.log("video id :::: ",req.params.vid)
+        // if (!mongoose.Types.ObjectId.isValid(req.params.vid)) {
+        //     console.log("herreee")
+        //     return res.status(400).json({ message: "Invalid Video ID" });
+        // }
         const video = await Video.findById(req.params.vid)
         if(!video){
             console.log("VIDEO NOT FOUND...")
             return res.json({message:"VIDEO NOT FOUND"})
         }
+        console.log("video::::" ,video)
         const token = await req.headers.authorization.split(" ")[1]
         const verifyToken = await jwt.verify(token,process.env.jwtSecret)
         if(!verifyToken){
@@ -116,17 +130,24 @@ VideoRouter.delete("/:vid",async(req,res)=>{
         }
         console.log(verifyToken)
         console.log(video)
-        // if(verifyToken._id != video.UserId){
-        //     return res.json({message:"YOU DONT HAVE ACCESS TO DELETE THIS VIDEO"})
-        // }
-        const deletedVideo = await cloudinary.uploader.destroy(video.VideoId,{resource_type:'video'})
-        const deletedThumbnail = await cloudinary.uploader.destroy(video.ThumbnailId,{resource_type:'image'})
+        try{
+        if(verifyToken._id != video.UserId){
+            return res.json({message:"YOU DONT HAVE ACCESS TO DELETE THIS VIDEO"})
+        }
+
+            const deletedVideo = await cloudinary.uploader.destroy(video.VideoId,{resource_type:'video'})
+            const deletedThumbnail = await cloudinary.uploader.destroy(video.ThumbnailId,{resource_type:'image'})
+        }catch(e){
+            console.log("in cloudinary fault",e)
+            return res.json({message:"An error occured !! Please try again!"})
+        }
         const deletedVideoData = await Video.findByIdAndDelete(req.params.vid)
         console.log(deletedVideoData);
         console.log("/delte working perfectly...")
+        return res.json({message:"Deleted"})
     }catch(e){
-        console.log("ERROR WHILE DELETING THE VIDEO...",e)
-        return res.status(401).json({message:"ERROR WHILE DELETING VIDEO..."})
+        console.log("EjhjRROR WHILE DELETING THE VIDEO..dd.",e)
+        return res.status(401).json({message:"ERROR WHILE DELETING VIDEO...",error:e})
     }
 })
 VideoRouter.put("/like/:vid",async(req,res)=>{
@@ -239,7 +260,7 @@ VideoRouter.get("/all",async(req,res)=>{
         console.log(AllVideos)
         res.send(AllVideos)
     }
-    catch{
+    catch(e){
         console.log("ERROR IN WHILE FETCHING VIDEOS...",e);
         res.send({message:'ERROR IN FETCHING VIDEOS...'});
     }

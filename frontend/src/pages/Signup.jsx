@@ -17,28 +17,36 @@ const Signup = () => {
     const [imgurl, setImgurl] = useState("")
     const [logo, setLogo] = useState("")
     function handleSubmit(e) {
-        e.preventDefault();
-        if (!imgurl) {
-            console.log("Not selected")
-            toast.info("Select a channel Logo")
-            return;
-        }
-        const formdata = new FormData();
-        formdata.append("ChannelName", channelName)
-        formdata.append("Email", email)
-        formdata.append("Phone", phone)
-        formdata.append("Password", password)
-        formdata.append("logo", logo)
-        setloading(true)
-        axios.post(`${BACKEND_URL}/user/register`, formdata).then((response) => {
-            toast.success(response.data.message)
-            navigate("/signin")
-            console.log(response)
-        })
+        try{
+
+            e.preventDefault();
+            if (!imgurl) {
+                console.log("Not selected")
+                toast.info("Select a channel Logo")
+                return;
+            }
+            const formdata = new FormData();
+            formdata.append("ChannelName", channelName)
+            formdata.append("Email", email)
+            formdata.append("Phone", phone)
+            formdata.append("Password", password)
+            formdata.append("logo", logo)
+            setloading(true)
+            axios.post(`${BACKEND_URL}/user/register`, formdata).then((response) => {
+                if(response.status===200){
+
+                    toast.success(response.data.message)
+                    navigate("/signin")
+                    console.log(response)
+                }
+            })
             .catch((e) => {
                 console.log(e)
-                toast.error(e.response.data.message)
+                toast.error(e.response?.data?.message || "Please try again" )
             })
+        }catch(e){
+            toast.error(e.response?.data?.message || "Please try again")
+        }
     }
     function handlefile(e) {
         console.log(e.target.files)
@@ -47,7 +55,7 @@ const Signup = () => {
     }
     return (
         <>
-            <div className=" text-white h-screen min-w-full flex flex-col bg-bgray transition-all duration-1000">
+            <div className=" text-white h-screen min-w-full flex flex-col  bg-gradient-to-r from-bgray via-neutral-900 to-black transition-all duration-1000">
                 <Navbar />
                 <div className="flex-1 flex justify-center items-center   ">
 

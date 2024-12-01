@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Myvideos = () => {
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [videos, setVideos] = useState([]);
-
+  const navigate = useNavigate()
   useEffect(() => {
     getvideos();
   }, []);
@@ -51,15 +52,20 @@ const Myvideos = () => {
           toast.error('Failed to delete the video.');
         }
       } catch (e) {
+        console.log(e.response.data.error)
         toast.error(e.response?.data?.message || 'An error occurred while deleting.');
       }
     }
   };
 
+  const handleClick = async(vid)=>{
+    console.log("onclidkckkk",vid)
+    navigate(`/video/${vid}`)
+  }
   return (
     <div className="text-white">
       <Navbar />
-      <div className="bg-bgray min-h-screen w-full px-8 py-4 font-mono">
+      <div className="bg-gradient-to-r from-bgray via-neutral-900 to-black min-h-screen w-full px-8 py-4 font-mono">
         <div className='text-5xl mb-2 font-mono'>My videos</div>
         <div className="overflow-x-auto rounded-sm">
           <table className="w-full table-auto border-collapse text-sm">
@@ -76,7 +82,7 @@ const Myvideos = () => {
               {videos.map((vid) => (
                 <tr key={vid.VideoId} className="hover:bg-secondary">
                   <td className="px-4 py-2 border border-gray-700 flex items-center gap-4">
-                    <img
+                    <img onClick={()=>{handleClick(vid._id)}}
                       className="w-32 h-20  border-2 border-secondary rounded"
                       src={vid.ThumbnailUrl}
                       alt="Thumbnail"
@@ -93,7 +99,7 @@ const Myvideos = () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(vid.VideoId)}
+                      onClick={() => handleDelete(vid._id)}
                       className="bg-red-500 hover:bg-red-600 font-mono text-md text-white  font-bold py-1 px-2 rounded"
                     >
                       Delete

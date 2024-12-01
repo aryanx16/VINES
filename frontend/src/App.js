@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import UploadVid from './pages/UploadVid';
 import Myvideos from './pages/Myvideos';
 import Subscriptions from './pages/Subscriptions';
+import Video from './pages/Video';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
   {path:"/upload",element:<UploadVid/>},
   {path:"/myvideos",element:<Myvideos/>},
   {path:"/subscriptions",element:<Subscriptions/>},
+  {path:"/video/:vid",element:<Video/>}
 ]);
 function App() {
   return (

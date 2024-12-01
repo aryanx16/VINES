@@ -18,61 +18,60 @@ const Home = () => {
       console.log(response);
       if (response.status === 200) {
         setVideos(response.data);
+        // setVideos(Array.isArray(response.data) ? response.data : []);
       }
     } catch (e) {
       console.error('Error fetching videos:', e);
     }
   };
+  const formatViews=(num)=>{
+    if(num>1e9){
+      return (num/1e9).toFixed(1)+'B'
+    }
+    if (num >= 1e6) {
+      return (num / 1e6).toFixed(1) + 'M';
+    }
+    if (num >= 1e3) {
+      return (num / 1e3).toFixed(1) + 'K';
+    }
+    if(num<0){
+      return 0;
+    }
+    return num;
+  }
 
   return (
-    // <div className="min-h-screen bg-bgray text-white ">
-    //   {/* Navbar */}
-    //   <Navbar />
-    //   {/* Main Content */}
-    //   <div className="flex flex-wrap justify-center gap-5 p-5">
-    //     {videos.length > 0 ? (
-    //       videos.map((video) => (
-    //         <div
-    //           key={video._id}
-    //           className=" rounded-lg p-3 w-64 shadow-md hover:shadow-xl transition-shadow duration-300"
-    //         >
-    //           {/* Thumbnail */}
-    //           <div className="relative w-full h-36">
-    //             <img
-    //               className="w-full h-full object-cover rounded-lg"
-    //               src={video.ThumbnailUrl}
-    //               alt={video.Title}
-    //             />
-    //           </div>
-    //           {/* Details */}
-    //           <div className="mt-2">
-    //             <h3 className="font-semibold text-lg truncate">{video.Title}</h3>
-    //             <p className="text-sm text-gray-400">
-    //               {video.Views} views • {moment(video.createdAt).fromNow()}
-    //             </p>
-    //             <p className="text-xs text-gray-500 mt-1">
-    //               Tags: {video.Tags.join(', ')}
-    //             </p>
-    //           </div>
-    //         </div>
-    //       ))
-    //     ) : (
-    //       <div className="text-gray-500">No videos available</div>
-    //     )}
-    //   </div>
-    // </div>
 
-    <div className='bg-bgray min-h-screen text-white'>
+    <div className='bg-gradient-to-r from-bgray via-neutral-900 to-black min-h-screen text-white font-mono'>
       <Navbar />
       <div className='flex flex-wrap justify-center gap-5 '>
           {videos.map((video)=>(
-            <div key={video._id} className=''>
-              <div>
-                <img className='w-screen h-48 sm:w-96 sm:h-56 sm:rounded-2xl ' src={video.ThumbnailUrl} alt="" />
+            <div key={video._id} className='relative group'>
+              {/* Thumbnail */}
+              <div className='relative'>
+                <img className='w-screen h-52 sm:w-96 sm:h-56 sm:rounded-2xl ' src={video.ThumbnailUrl} alt="" />
+                <video
+                className='absolute top-0 left-0 w-full h-full object-cover rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'
+                src={video.VideoUrl} 
+                muted
+                autoPlay
+                loop
+              />
               </div>
-              <div className='flex'>
-                <div>
-                    {/* <img src={video.} alt="" /> */}
+              {/* below Thumbail */}
+              <div className='flex mt-2 '>
+                {/* logo */}
+                <div className='rounded-full  mx-2'>
+                    <img className='object-fill h-9 w-9 rounded-full' src={video.UserId.LogoUrl} alt="" />
+                </div>
+                <div className='flex flex-col'>
+                  <div className=' max-w-80 max-h-12 overflow-hidden  border'>
+                  {video.Title}
+                  </div>
+                  {/* below title */}
+                  <div className='text-sm text-neutral-300'>
+                    {video.UserId.ChannelName} • {formatViews(video.Views)} views • {moment(video.createdAt).fromNow()}
+                  </div>
                 </div>
               </div>
             </div>
