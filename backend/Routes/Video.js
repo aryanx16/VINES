@@ -13,9 +13,10 @@ cloudinary.config({
 })
 
 // VideoRouter.get("/subscribed")
-VideoRouter.get("/fullvideo/:vid",async(req,res)=>{
+VideoRouter.get("/fullvideo/:vid",CheckAuth,async(req,res)=>{
     try{
-
+        const token = req.headers.authorization.split(" ")[1]
+        const user = await jwt.verify(token,process.env.jwtSecret)
         const vid = req.params.vid
         console.log("video idddd ",vid)
         const video =await Video.findById(vid).populate('UserId')
@@ -23,7 +24,12 @@ VideoRouter.get("/fullvideo/:vid",async(req,res)=>{
         if(!video){
             return res.json({message:"Video not found"})
         }
-        return res.json({video:video})
+        video.Views+=1;
+        await video.save()
+        const isSub = user._id? video.UserId.SubscribedBy.includes(user._id):false
+        const isLike = user._id? video.LikedBy.includes(user._id):false
+        const isDislike = user._id? video.DislikedBy.includes(user._id):false
+        return res.json({video:video,isSub:isSub,isLike:isLike,isDisLike:isDislike})
     }catch(e){
         console.log(e)
         return res.json({message:"Error in video"})
@@ -112,7 +118,7 @@ VideoRouter.put("/:VideoId",async(req,res)=>{
 })
 VideoRouter.delete("/:vid",async(req,res)=>{
     try{
-        console.log("video id :::: ",req.params.vid)
+        // console.log("video id :::: ",req.params.vid)
         // if (!mongoose.Types.ObjectId.isValid(req.params.vid)) {
         //     console.log("herreee")
         //     return res.status(400).json({ message: "Invalid Video ID" });
@@ -122,7 +128,7 @@ VideoRouter.delete("/:vid",async(req,res)=>{
             console.log("VIDEO NOT FOUND...")
             return res.json({message:"VIDEO NOT FOUND"})
         }
-        console.log("video::::" ,video)
+        // console.log("video::::" ,video)
         const token = await req.headers.authorization.split(" ")[1]
         const verifyToken = await jwt.verify(token,process.env.jwtSecret)
         if(!verifyToken){
@@ -257,7 +263,7 @@ VideoRouter.get("/all",async(req,res)=>{
     try{
 
         const AllVideos = await Video.find({}).populate('UserId')
-        console.log(AllVideos)
+        // console.log(AllVideos)
         res.send(AllVideos)
     }
     catch(e){

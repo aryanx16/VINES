@@ -20,7 +20,7 @@ const Navbar = () => {
     }
     
     return (
-        <div className='bg-gradient-to-r from-bgray via-neutral-900 to-black text-white flex flex-col '>
+        <div className='sticky top-0 z-10 bg-gradient-to-r from-bgray via-neutral-900 to-black text-white flex flex-col '>
             {/* Sidebar */}
             <div
                 className={`fixed top-0 z-10 bg-gradient-to-tr from-bgray via-neutral-900 to-black h-full  transform transition-transform duration-300 ${sidebar ? 'translate-x-0' : '-translate-x-[150%]'

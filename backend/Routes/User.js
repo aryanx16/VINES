@@ -40,6 +40,7 @@ ClientRouter.post("/register", async (req, res) => {
         console.log("/register IS WORKING PERFECTLY...")
     }
     catch (e) {
+        console.log(e)
         return res.status(500).json({ message: "Error in register...", error: e })
     }
 
@@ -117,7 +118,7 @@ ClientRouter.put("/profile/:uid", async (req, res) => {
 
     }
 })
-ClientRouter.post("/subscribe/:youtuberid", async (req, res) => {
+ClientRouter.put("/subscribe/:youtuberid", async (req, res) => {
     try {
 
         const token = req.headers.authorization.split(" ")[1]

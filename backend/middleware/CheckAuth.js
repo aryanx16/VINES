@@ -13,7 +13,7 @@ const jwt = require("jsonwebtoken")
         const verify = jwt.verify(token,process.env.jwtSecret)
         if(!verify){
             console.log("TOKEN VERIFICATION FAILED...")
-            return res.status(401).json({message:"Invalid User !"})
+            return res.status(401).json({message:"bg-gradient-to-r from-bgray via-neutral-900 to-black User !"})
         }
         next()
     }catch(e){

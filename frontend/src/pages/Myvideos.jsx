@@ -46,7 +46,7 @@ const Myvideos = () => {
         if (response.status === 200) {
           toast.success('Video deleted successfully!');
           setVideos((prevVideos) =>
-            prevVideos.filter((video) => video.VideoId !== videoId)
+            prevVideos.filter((video) => video._id !== videoId)
           );
         } else {
           toast.error('Failed to delete the video.');

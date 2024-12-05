@@ -3,15 +3,20 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-
+  const navigate = useNavigate()
   useEffect(() => {
     getVideos();
   }, []);
 
+  const handleClick = async(vid)=>{
+    console.log("onclidkckkk",vid)
+    navigate(`/video/${vid}`)
+  }
   const getVideos = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/video/all`);
@@ -41,32 +46,37 @@ const Home = () => {
   }
 
   return (
+<div>
 
-    <div className='bg-gradient-to-r from-bgray via-neutral-900 to-black min-h-screen text-white font-mono'>
       <Navbar />
+    <div className='bg-gradient-to-r from-bgray via-neutral-900 to-black min-h-screen text-white font-mono'>
       <div className='flex flex-wrap justify-center gap-5 '>
           {videos.map((video)=>(
-            <div key={video._id} className='relative group'>
+            <div key={video._id}  className='relative group cursor-pointer'>
               {/* Thumbnail */}
               <div className='relative'>
-                <img className='w-screen h-52 sm:w-96 sm:h-56 sm:rounded-2xl ' src={video.ThumbnailUrl} alt="" />
-                <video
-                className='absolute top-0 left-0 w-full h-full object-cover rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300'
+                <img className='w-screen  h-52 sm:w-96 sm:h-56 sm:rounded-2xl group-hover:opacity-0' onClick={()=>{handleClick(video._id)}} src={video.ThumbnailUrl} alt="" />
+                <video  onClick={()=>{handleClick(video._id)}}
+                className='absolute  sm:group-hover:scale-105 transition-transform duration-300 top-0 left-0 w-full h-full object-cover rounded-2xl opacity-0 group-hover:opacity-100 '
                 src={video.VideoUrl} 
                 muted
                 autoPlay
                 loop
-              />
+                />
               </div>
               {/* below Thumbail */}
               <div className='flex mt-2 '>
                 {/* logo */}
                 <div className='rounded-full  mx-2'>
-                    <img className='object-fill h-9 w-9 rounded-full' src={video.UserId.LogoUrl} alt="" />
+                    <img  className='object-cover h-9 w-9 rounded-full' src={video.UserId.LogoUrl} alt="" />
                 </div>
-                <div className='flex flex-col'>
-                  <div className=' max-w-80 max-h-12 overflow-hidden  border'>
+                {/* Title */}
+                <div className=''>
+                  <div className=' max-w-80 max-h-12 overflow-hidden  '>
+                    <h3  onClick={()=>{handleClick(video._id)}} className='line-clamp-2 hover:text-neutral-300'>
                   {video.Title}
+
+                    </h3>
                   </div>
                   {/* below title */}
                   <div className='text-sm text-neutral-300'>
@@ -75,9 +85,11 @@ const Home = () => {
                 </div>
               </div>
             </div>
+            
           ))}
       </div>
     </div>
+          </div>
   );
 };
 
