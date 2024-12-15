@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { House } from 'lucide-react';
+import {motion} from 'framer-motion'
 
 const Navbar = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [sidebar, setSidebar] = useState(false);
-
     const navigate = useNavigate()
     const location = useLocation()
-
+    console.log(location.pathname==='/home')
     const logoUrl = localStorage.getItem("logoUrl")
     const channelName = localStorage.getItem("channelName");
 
@@ -20,10 +20,9 @@ const Navbar = () => {
     }
     
     return (
-        <div className='sticky top-0 z-10 bg-gradient-to-r from-bgray via-neutral-900 to-black text-white flex flex-col '>
-            {/* Sidebar */}
-            <div
-                className={`fixed top-0 z-10 bg-gradient-to-tr from-bgray via-neutral-900 to-black h-full  transform transition-transform duration-300 ${sidebar ? 'translate-x-0' : '-translate-x-[150%]'
+        <div>
+             <div
+                className={`fixed top-0 z-20 text-white backdrop-blur-md h-full  transform transition-transform duration-300 ${sidebar ? 'translate-x-0' : '-translate-x-[150%]'
                     }`}
             >
                 <div onClick={() => setSidebar(!sidebar)} className="p-4 cursor-pointer">
@@ -35,12 +34,12 @@ const Navbar = () => {
                         stroke="currentColor"
                         className="w-6 h-6"
                         aria-label="Close Sidebar"
-                    >
+                        >
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             d="M6 18L18 6M6 6l12 12"
-                        />
+                            />
                     </svg>
 
 
@@ -79,29 +78,48 @@ const Navbar = () => {
 
                         )}Home</li>
                         <li onClick={() => { navigate("/subscriptions") }} className={`p-4 text-lg flex gap-1  font-mono   hover:bg-neutral-700  ${location.pathname === '/subscriptions' ? 'bg-neutral-800' : ''} `}>
-                        {location.pathname === '/home' ? (
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path clip-rule="evenodd" d="M4 4.5A1.5 1.5 0 015.5 3h13A1.5 1.5 0 0120 4.5H4Zm16.5 3h-17v11h17v-11ZM3.5 6A1.5 1.5 0 002 7.5v11A1.5 1.5 0 003.5 20h17a1.5 1.5 0 001.5-1.5v-11A1.5 1.5 0 0020.5 6h-17Zm7.257 4.454a.5.5 0 00-.757.43v4.233a.5.5 0 00.757.429L15 13l-4.243-2.546Z" fill-rule="evenodd"></path></svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" ><path clip-rule="evenodd" d="M5.5 3A1.5 1.5 0 004 4.5h16A1.5 1.5 0 0018.5 3h-13ZM2 7.5A1.5 1.5 0 013.5 6h17A1.5 1.5 0 0122 7.5v11a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 012 18.5v-11Zm8 2.87a.5.5 0 01.752-.431L16 13l-5.248 3.061A.5.5 0 0110 15.63v-5.26Z" fill-rule="evenodd"></path></svg>
+                        {location.pathname === '/subscriptions' ? (
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" ><path clip-rule="evenodd" d="M5.5 3A1.5 1.5 0 004 4.5h16A1.5 1.5 0 0018.5 3h-13ZM2 7.5A1.5 1.5 0 013.5 6h17A1.5 1.5 0 0122 7.5v11a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 012 18.5v-11Zm8 2.87a.5.5 0 01.752-.431L16 13l-5.248 3.061A.5.5 0 0110 15.63v-5.26Z" fill-rule="evenodd"></path></svg>
 
+                        ) : ( <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path clip-rule="evenodd" d="M4 4.5A1.5 1.5 0 015.5 3h13A1.5 1.5 0 0120 4.5H4Zm16.5 3h-17v11h17v-11ZM3.5 6A1.5 1.5 0 002 7.5v11A1.5 1.5 0 003.5 20h17a1.5 1.5 0 001.5-1.5v-11A1.5 1.5 0 0020.5 6h-17Zm7.257 4.454a.5.5 0 00-.757.43v4.233a.5.5 0 00.757.429L15 13l-4.243-2.546Z" fill-rule="evenodd"></path></svg>
+                           
                         )}
                             Subscriptions</li>
-                        <li onClick={() => { navigate("/myvideos") }} className={`p-4 font-mono  hover:bg-neutral-700  ${location.pathname === '/myvideos' ? 'bg-neutral-800' : ''} `}>My Videos</li>
-                        <li onClick={() => { navigate("/about") }} className={`p-4 font-mono  hover:bg-neutral-700  ${location.pathname === '/about' ? 'bg-neutral-800' : ''}`}>About</li>
+                        <li onClick={() => { navigate("/myvideos") }} className={`p-4 font-mono  flex  gap-1 hover:bg-neutral-700  ${location.pathname === '/myvideos' ? 'bg-neutral-800' : ''} `}>
+                    {location.pathname==='/myvideos'?(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Z"/></svg>):(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>)}My Videos</li>
+                      
                         {logoUrl ?
-                            <li onClick={handlelogout} className={`p-4 rounded-md  hover:bg-neutral-800  hover:text-red-600 text-red-500 font-semibold font-mono m-1 ${location.pathname === '/logout' ? 'bg-neutral-700' : ''} `}>Logout</li>
-                            : <li onClick={() => { navigate("/signup") }} className={`p-4 rounded-md hover:bg-neutral-700 m-1 ${location.pathname === '/register' ? 'bg-neutral-700' : ''} `}>Signup</li>}
+                        <motion.li
+                        onClick={handlelogout}
+                        className={`p-2 flex justify-center items-center rounded-md gap-1 bg-red-600 font-bold font-mono m-3 ${
+                            location.pathname === '/logout' ? 'bg-neutral-700' : ''
+                        }`}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                    >
+                        Logout
+                    </motion.li>
+                            : <motion.li onClick={() => { navigate("/signup") }} className={`p-2 font-mono  flex justify-center items-center font-bold gap-1 bg-gradient-to-l rounded-md from-cyan-500 to-blue-500 hover:bg-gradient-to-r m-3 ${location.pathname === '/register' ? 'bg-neutral-700' : ''} `}    whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}>Signup</motion.li>}
                     </ul></div>
             </div>
 
+        <div className='fixed w-full top-0 z-10 bg-gradient-to-r backdrop-blur-md text-white flex flex-col '>
+           
             {/* Navbar */}
-            <div className="transition-all duration-1000 w-full p-5 sticky top-0 shadow-2xl">
+            <div className=" transition-all duration-1000  w-full p-5 sticky top-0 shadow-2xl">
                 <div className={`flex ${showSearch ? 'justify-center' : 'justify-between'}`}>
                     {/* Sidebar toggle button */}
                     {!showSearch && (
                         <div
-                            className="flex justify-center items-center gap-2 cursor-pointer"
-                            onClick={() => setSidebar(!sidebar)}
+                        className="flex justify-center items-center gap-2 cursor-pointer"
+                        onClick={() => setSidebar(!sidebar)}
                         >
                             <div className='hover:bg-neutral-700 rounded-full p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -124,11 +142,11 @@ const Navbar = () => {
                     <div className="block md:hidden ">
                         {showSearch ? (
                             <input
-                                type="text"
-                                className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[400px] rounded-full"
-                                placeholder="Search"
-                                autoFocus
-                                onBlur={() => setShowSearch(false)}
+                            type="text"
+                            className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[400px] rounded-full"
+                            placeholder="Search"
+                            autoFocus
+                            onBlur={() => setShowSearch(false)}
                             />
                         ) : (
                             <div className='flex justify-center items-center'>
@@ -146,7 +164,7 @@ const Navbar = () => {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
-                                    />
+                                        />
                                 </svg>
                             </div>
                         )}
@@ -170,12 +188,12 @@ const Navbar = () => {
                                 strokeWidth="1.5"
                                 stroke="currentColor"
                                 className="size-8"
-                            >
+                                >
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                                />
+                                    />
                             </svg>
 
                             <svg
@@ -185,7 +203,7 @@ const Navbar = () => {
                                 strokeWidth="1.5"
                                 stroke="currentColor"
                                 className="size-8"
-                            >
+                                >
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -198,6 +216,7 @@ const Navbar = () => {
             </div>
 
         </div>
+                    </div>
     );
 };
 

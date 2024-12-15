@@ -43,7 +43,9 @@ const Video = () => {
         setsubscribers(response.data.video.UserId.Subscribers)
         setisSub(response.data.isSub)
         setisLike(response.data.isLike)
-        setisDislike(response.data.isDislike)
+        setisDislike(response.data.isDisLike)
+        setlikes(response.data.video.Likes)
+        setdislkes(response.data.video.Dislikes)
       }
       
     } catch (e) {
@@ -86,6 +88,7 @@ const Video = () => {
         setisDislike(false);
         const newIsLike = !isLike;
         setisLike(newIsLike);
+        setdislkes(dislikes-1)
         // const currlikes = likes
         setlikes(likes+1)
         console.log("likes::",likes)
@@ -95,7 +98,11 @@ const Video = () => {
             setisLike(newIsLike);
               }
       console.log(isLike)
-      const response = await axios.put(`${BACKEND_URL}/video/like/${vid}`)
+      const response = await axios.put(`${BACKEND_URL}/video/like/${vid}`,{},{
+        headers:{
+          Authorization:'Bearer '+localStorage.getItem("token")
+        }
+      })
       // console.log("like")
     }catch(e){
       console.log(e)
@@ -108,18 +115,26 @@ const Video = () => {
       if(isLike){
         setisLike(false)
         setisDislike(currdislike)
+        setdislkes(dislikes+1)
+        setlikes(likes-1)
       }else{
+        isDislike?setdislkes(dislikes-1):setdislkes(dislikes+1)
         setisDislike(currdislike)
       }
+      const response = await axios.put(`${BACKEND_URL}/video/dislike/${vid}`,{},{
+        headers:{
+          Authorization:'Bearer '+localStorage.getItem("token")
+        }
+      })
     }catch(e){
-
+      toast.error(e.response?.data?.message || "Please try again")
     }
   }
   return (
     <div>
 
       <Navbar />
-      <div className="text-white bg-gradient-to-r from-bgray via-neutral-900 to-black min-h-screen w-full px-4 py-4 sm:px-14 font-mono">
+      <div className="text-white bg-gradient-to-r from-bgray via-neutral-800 to-black min-h-screen w-full px-4 py-4 sm:px-14 font-mono">
         <div className='grid grid-cols-3 '>
           {/* left video section */}
           <div className='text-red-50  col-span-3 lg:col-span-2'>
@@ -136,14 +151,14 @@ const Video = () => {
                   <div className=' flex text-sm text-neutral-400'>{subscribers} Subscribers</div>
                 </div>
                 {/* sub btn */}
-                <div onClick={()=>{handlesubscribe(video.UserId._id)}} className={`hidden  sm:block ${isSub?'bg-neutral-600':'bg-white'}   text-black p-1 px-2 rounded-full`}>
+                <div onClick={()=>{handlesubscribe(video.UserId._id)}} className={`hidden  sm:block ${isSub?'bg-neutral-600':'text-neutral-400 bg-gradient-to-r from-purple-600/35 via-purple-500/35 to-blue-400/35'}   text-black p-1 px-2 rounded-full`}>
                   <button className=''>{isSub ? 'Subscribed' : 'Subscribe'}</button>
                 </div>
               </div>
               {/* below video right side */}
-              <div className='flex border-neutral-600 items-center gap-4 px-2 border md:px-5 md:py-1 bg-neutral-800 rounded-full'>
+              <div className='flex border-neutral-600 items-center gap-4 px-2 border md:px-5 md:py-1 bg-neutral-800 rounded-full bg-gradient-to-r from-purple-600/30 via-purple-500/30 to-blue-500/30'>
                 {/* like */}
-                <div className='flex' onClick={()=>{handleLike(video.UserId._id)}}>
+                <div className='flex' onClick={()=>{handleLike(video._id)}}>
                   {isLike?(
                     
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="M720-120H320v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h218q32 0 56 24t24 56v80q0 7-1.5 15t-4.5 15L794-168q-9 20-30 34t-44 14ZM240-640v520H80v-520h160Z"/></svg>
@@ -155,7 +170,7 @@ const Video = () => {
                 </div>
                 <div>|</div>
                 {/* dislike */}
-                <div onClick={()=>{handleDislike(video.UserId._id)}} className='flex'>
+                <div onClick={()=>{handleDislike(video._id)}} className='flex'>
                   {isDislike?(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="M240-840h400v520L360-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 1.5-15t4.5-15l120-282q9-20 30-34t44-14Zm480 520v-520h160v520H720Z"/></svg>):(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z"/></svg>)}
                   {dislikes}
                 </div>
@@ -173,7 +188,7 @@ const Video = () => {
                 scale: 1.05,
                 // backgroundColor: 'rgba(31, 41, 55, 1)',
               }}
-              transition={{ duration: 0.3 }} onClick={()=>{handleClick(vid._id)}} className='flex   gap-2 rounded-md'>
+              transition={{ duration: 0.3 }} onClick={()=>{handleClick(vid._id)}} className='flex    gap-2 rounded-md'>
                 <div className=''>
                   {/* Right thumbnails */}
                 <img onClick={()=>{handleClick(vid._id)}} src={vid.ThumbnailUrl} className='max-w-40  rounded-md' alt="" />

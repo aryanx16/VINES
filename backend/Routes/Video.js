@@ -12,7 +12,16 @@ cloudinary.config({
     api_secret: process.env.API_SECRET,
 })
 
-// VideoRouter.get("/subscribed")
+VideoRouter.get("/subscribed",CheckAuth,async(req,res)=>{
+    try{
+        const token = req.headers.authorization.split(" ")[1]
+        const user = await jwt.verify(token,process.env.jwtSecret)
+        const Subscribedchannels = await User.find({})
+        return res.json({message:"Videos fetched successfully",subscribedVideos:subscribedVideos})
+    }catch(e){
+        return res.json({message:"Please try again",error:e})
+    }
+})
 VideoRouter.get("/fullvideo/:vid",CheckAuth,async(req,res)=>{
     try{
         const token = req.headers.authorization.split(" ")[1]
@@ -170,7 +179,8 @@ VideoRouter.put("/like/:vid",async(req,res)=>{
             return res.json({message:"User not found"})
         }
         const video = await Video.findById(req.params.vid);
-        // console.log(video)
+        
+        console.log(video)
         console.log(video.LikedBy)
         const isLiked = video.LikedBy.includes(user._id)
         const isDisliked = video.DislikedBy.includes(user._id)

@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage:{
+        'a':"url('/earth.jpg')"
+      },
       colors:{
         bgray:"rgb(1, 4, 10)",
         secondary:"rgb(13, 17, 23)",
