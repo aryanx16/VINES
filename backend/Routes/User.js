@@ -58,7 +58,7 @@ ClientRouter.post("/login", async (req, res) => {
             console.log("INCORRECT PASSWORD")
             return res.status(401).json({ message: "Incorrect Password" })
         }
-        const token = jwt.sign({ _id: isUser._id, Email: isUser.Email, ChannelName: isUser.ChannelName, Phone: isUser.Phone, LogoId: isUser.LogoId }, process.env.jwtSecret)
+    const token = jwt.sign({ _id: isUser._id, Email: isUser.Email, ChannelName: isUser.ChannelName, Phone: isUser.Phone, LogoId: isUser.LogoId }, process.env.jwtSecret,{expiresIn:'1h'})
         return res.json({
             token: token,
             userId: isUser._id,

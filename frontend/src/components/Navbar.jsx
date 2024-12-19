@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { House } from 'lucide-react';
@@ -12,7 +12,18 @@ const Navbar = () => {
     console.log(location.pathname==='/home')
     const logoUrl = localStorage.getItem("logoUrl")
     const channelName = localStorage.getItem("channelName");
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape' ) {
+                setSidebar(!sidebar);
+            }
+        };
 
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [sidebar]);
     function handlelogout() {
         localStorage.clear()
         toast.success("Logged out")
@@ -21,6 +32,7 @@ const Navbar = () => {
     
     return (
         <div>
+            {/* sidebar */}
              <div
                 className={`fixed top-0 z-20 text-white backdrop-blur-md h-full  transform transition-transform duration-300 ${sidebar ? 'translate-x-0' : '-translate-x-[150%]'
                     }`}
@@ -65,7 +77,7 @@ const Navbar = () => {
                     }
                     {/* </div> */}
                     <ul className="mt-4 text-white cursor-pointer">
-                        <li onClick={() => { navigate("/home") }} className={`p-4 font-mono flex gap-1 text-lg hover:bg-neutral-700  ${location.pathname === '/home' ? '' : ''}`}> {location.pathname === '/home' ? (
+                        <li onClick={() => { navigate("/home") }} className={`p-4 font-mono flex gap-1 text-lg hover:scale-110 hover:translate-x-3 transition-all duration-300  ${location.pathname === '/home' ? '' : ''}`}> {location.pathname === '/home' ? (
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                 <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                                 <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
@@ -77,7 +89,7 @@ const Navbar = () => {
                             </svg>
 
                         )}Home</li>
-                        <li onClick={() => { navigate("/subscriptions") }} className={`p-4 text-lg flex gap-1  font-mono   hover:bg-neutral-700  ${location.pathname === '/subscriptions' ? 'bg-neutral-800' : ''} `}>
+                        <li onClick={() => { navigate("/subscriptions") }} className={`p-4 text-lg flex gap-1  font-mono   hover:scale-110 hover:translate-x-2 transition-all duration-300   ${location.pathname === '/subscriptions' ? 'bg-neutral-800' : ''} `}>
                         {location.pathname === '/subscriptions' ? (
                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" ><path clip-rule="evenodd" d="M5.5 3A1.5 1.5 0 004 4.5h16A1.5 1.5 0 0018.5 3h-13ZM2 7.5A1.5 1.5 0 013.5 6h17A1.5 1.5 0 0122 7.5v11a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 012 18.5v-11Zm8 2.87a.5.5 0 01.752-.431L16 13l-5.248 3.061A.5.5 0 0110 15.63v-5.26Z" fill-rule="evenodd"></path></svg>
 
@@ -85,7 +97,7 @@ const Navbar = () => {
                            
                         )}
                             Subscriptions</li>
-                        <li onClick={() => { navigate("/myvideos") }} className={`p-4 font-mono  flex  gap-1 hover:bg-neutral-700  ${location.pathname === '/myvideos' ? 'bg-neutral-800' : ''} `}>
+                        <li onClick={() => { navigate("/myvideos") }} className={`p-4 font-mono  flex  gap-1 hover:scale-110 hover:translate-x-3 transition-all duration-300   ${location.pathname === '/myvideos' ? '' : ''} `}>
                     {location.pathname==='/myvideos'?(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Z"/></svg>):(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>)}My Videos</li>
                       
                         {logoUrl ?
