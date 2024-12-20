@@ -17,6 +17,7 @@ const Home = () => {
   const handleClick = async (vid) => {
     console.log("onclidkckkk", vid)
     navigate(`/video/${vid}`)
+    window.scrollTo({top:0,behavior:'smooth'})
   }
   const getVideos = async () => {
     try {
@@ -56,7 +57,7 @@ const Home = () => {
 
         <Navbar />
       <div className='bg-neutral-950 pt-20'>
-        <div className='bg-neutral-950 min-h-screen text-white font-mono'>
+        <div className='bg-neutral-950 min-h-screen text-white font-mono flex flex-col'>
           <div className='flex flex-wrap justify-center gap-5 '>
             {videos.map((video) => (
               <div key={video._id} className='relative group cursor-pointer'>

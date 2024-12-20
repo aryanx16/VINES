@@ -22,10 +22,20 @@ VideoRouter.get("/subscribed",CheckAuth,async(req,res)=>{
         return res.json({message:"Please try again",error:e})
     }
 })
-VideoRouter.get("/fullvideo/:vid",CheckAuth,async(req,res)=>{
+VideoRouter.get("/fullvideo/:vid",async(req,res)=>{
     try{
-        const token = req.headers.authorization.split(" ")[1]
-        const user = await jwt.verify(token,process.env.jwtSecret)
+        const token =await req.headers.authorization ? req.headers.authorization :false
+        console.log(token)
+        console.log(req.headers.authorization)
+        let user = null
+        if(token){
+            try{
+                user = await jwt.verify(token,process.env.jwtSecret)
+            }catch(e){
+                console.log("invalid token",e)
+                return res.status(401).json({message:"Please login"})
+            }
+        }
         const vid = req.params.vid
         console.log("video idddd ",vid)
         const video =await Video.findById(vid).populate('UserId')
@@ -35,9 +45,9 @@ VideoRouter.get("/fullvideo/:vid",CheckAuth,async(req,res)=>{
         }
         video.Views+=1;
         await video.save()
-        const isSub = user._id? video.UserId.SubscribedBy.includes(user._id):false
-        const isLike = user._id? video.LikedBy.includes(user._id):false
-        const isDislike = user._id? video.DislikedBy.includes(user._id):false
+        const isSub = user? video.UserId.SubscribedBy.includes(user._id):false
+        const isLike = user ? video.LikedBy.includes(user._id):false
+        const isDislike = user ? video.DislikedBy.includes(user._id):false
         return res.json({video:video,isSub:isSub,isLike:isLike,isDisLike:isDislike})
     }catch(e){
         console.log(e)
@@ -165,7 +175,7 @@ VideoRouter.delete("/:vid",async(req,res)=>{
         return res.status(401).json({message:"ERROR WHILE DELETING VIDEO...",error:e})
     }
 })
-VideoRouter.put("/like/:vid",async(req,res)=>{
+VideoRouter.put("/like/:vid",CheckAuth,async(req,res)=>{
     try{
         const token = req.headers.authorization.split(" ")[1]
         console.log(token)
@@ -207,7 +217,7 @@ VideoRouter.put("/like/:vid",async(req,res)=>{
         return res.json({message:"ERROR WHILE LIKING THE VIDEO"})
     }
 })
-VideoRouter.put("/dislike/:vid",async(req,res)=>{
+VideoRouter.put("/dislike/:vid",CheckAuth,async(req,res)=>{
     try{
         const token = req.headers.authorization.split(" ")[1]
         console.log(token)

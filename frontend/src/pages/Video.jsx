@@ -37,7 +37,7 @@ const Video = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/video/fullvideo/${vid}`, {
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem("token")
+          Authorization:  localStorage.getItem("token")
         }
       })
       console.log(response)
@@ -156,7 +156,7 @@ const Video = () => {
             <div className='flex px-2 gap-4  items-center justify-between'>
               {/* below videoo left side */}
               <div className='flex gap-4 items-center'>
-                <motion.img whileHover={{ scale: 1.1 }} className='w-12 h-12 rounded-full object-cover' src={video.UserId?.LogoUrl} alt="kjkljl" />
+                <motion.img whileHover={{ scale: 1.1 }} className='w-12 h-12 rounded-full object-cover' src={video.UserId?.LogoUrl} alt="logo" />
                 {/* channelname & subs */}
                 <div className='flex flex-col'>
                   <div className=' flex'>{channelName}</div>

@@ -4,6 +4,7 @@ import { Hourglass } from 'react-loader-spinner'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { Upload } from 'lucide-react'
 
 const UploadVid = () => {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
@@ -94,8 +95,8 @@ const UploadVid = () => {
                         <form onSubmit={handleSubmit}>
 
                             <div className="flex flex-col gap-5 mt-5">
-                                <input required onChange={(e) => { setTitle(e.target.value) }} className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] rounded-md " type="text" placeholder="Title" />
-                                <input required onChange={(e) => { setDesc(e.target.value) }} className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] rounded-md " type="text" placeholder="Description" />
+                                <textarea required onChange={(e) => { setTitle(e.target.value) }} className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] rounded-md " type="text" placeholder="Title" />
+                                <textarea required onChange={(e) => { setDesc(e.target.value) }} className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] rounded-md " type="text" placeholder="Description" />
                                 <input required onChange={(e) => { setTags(e.target.value) }} className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] rounded-md " type="text" placeholder="Tags" />
                                 <input required onChange={(e) => { setCategory(e.target.value) }} className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] rounded-md " type="text" placeholder="Category" />
                                 <div className="flex flex-col sm:flex-row gap-3">
@@ -109,7 +110,7 @@ const UploadVid = () => {
                                     <input id="video"  onChange={handlevideo}  className="bg-secondary hidden  border-bordcol border shadow-2xl rounded-md p-1 " type="file" />
                                 </div>
                                 <div>
-                                    <button type="submit" className="bg-white  text-black font-semibold  border-bordcol border shadow-2xl rounded-md p-1 w-80 sm:w-[500px] hover:bg-slate-200 transition-all duration-200"><div className="flex justify-center items-center gap-2"> Submit
+                                    <button type="submit" className="bg-white  text-black font-semibold  border-bordcol border shadow-2xl rounded-md p-1 w-80 sm:w-[500px] hover:bg-slate-200 transition-all duration-200"><div className="flex justify-center items-center gap-2"> {loading? "Uploading":"Upload"}
                                     {loading &&     <Hourglass
                                             visible={true}
                                             height="20"

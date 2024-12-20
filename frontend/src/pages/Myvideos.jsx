@@ -63,9 +63,9 @@ const Myvideos = () => {
     navigate(`/video/${vid}`)
   }
   return (
-    <div className="text-white">
+    <div className="text-white bg-neutral-950">
       <Navbar />
-      <div className="bg-gradient-to-r from-bgray via-neutral-900 to-black min-h-screen w-full px-8 py-4 font-mono">
+      <div className="bg-gradient-to-r pt-24 from-bgray via-neutral-900 to-black min-h-screen w-full px-8 py-4 font-mono">
         <div className='text-5xl mb-2 font-mono'>My videos</div>
         <div className="overflow-x-auto rounded-sm">
           <table className="w-full table-auto border-collapse text-sm">

@@ -18,6 +18,6 @@ const jwt = require("jsonwebtoken")
         next()
     }catch(e){
         console.log("TOKEN VERIFACTION FAILED ..."+e)
-        return res.status(401).json({message:"Invalid User"}    )
+        return res.status(401).json({message:"Please Log in"}    )
     }
 }

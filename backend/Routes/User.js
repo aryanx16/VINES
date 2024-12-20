@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 const bcryptjs = require("bcryptjs")
 const User = require("../models/User")
 const jwt = require("jsonwebtoken")
+const CheckAuth = require("../middleware/CheckAuth")
 require("dotenv").config()
 const ClientRouter = express.Router();
 cloudinary.config({
@@ -58,7 +59,7 @@ ClientRouter.post("/login", async (req, res) => {
             console.log("INCORRECT PASSWORD")
             return res.status(401).json({ message: "Incorrect Password" })
         }
-    const token = jwt.sign({ _id: isUser._id, Email: isUser.Email, ChannelName: isUser.ChannelName, Phone: isUser.Phone, LogoId: isUser.LogoId }, process.env.jwtSecret,{expiresIn:'1h'})
+    const token = jwt.sign({ _id: isUser._id, Email: isUser.Email, ChannelName: isUser.ChannelName, Phone: isUser.Phone, LogoId: isUser.LogoId }, process.env.jwtSecret)
         return res.json({
             token: token,
             userId: isUser._id,
@@ -118,7 +119,7 @@ ClientRouter.put("/profile/:uid", async (req, res) => {
 
     }
 })
-ClientRouter.put("/subscribe/:youtuberid", async (req, res) => {
+ClientRouter.put("/subscribe/:youtuberid",CheckAuth, async (req, res) => {
     try {
 
         const token = req.headers.authorization.split(" ")[1]

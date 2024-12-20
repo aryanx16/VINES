@@ -8,7 +8,7 @@ const VideoLoader = () => {
                 {/* left video section */}
                 <div className='lg:col-span-2 col-span-3'>
                     {/* video */}
-                    <div className=' bg-neutral-700 h-52 lg:h-80 rounded-xl mb-1'>
+                    <div className=' bg-neutral-700 h-52 lg:h-[500px] rounded-xl mb-1'>
                     </div>
                     {/* below video */}
                     <div className=' h-20 flex gap-1'>

@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { House } from 'lucide-react';
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const Navbar = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [sidebar, setSidebar] = useState(false);
     const navigate = useNavigate()
     const location = useLocation()
-    console.log(location.pathname==='/home')
+    console.log(location.pathname === '/home')
     const logoUrl = localStorage.getItem("logoUrl")
     const channelName = localStorage.getItem("channelName");
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === 'Escape' ) {
+            if (event.key === 'Escape') {
                 setSidebar(!sidebar);
             }
         };
@@ -29,12 +29,12 @@ const Navbar = () => {
         toast.success("Logged out")
         navigate("/signin")
     }
-    
+
     return (
         <div>
             {/* sidebar */}
-             <div
-                className={`fixed top-0 z-20 text-white backdrop-blur-md h-full  transform transition-transform duration-300 ${sidebar ? 'translate-x-0' : '-translate-x-[150%]'
+            <div
+                className={`fixed top-0 z-20 text-white backdrop-blur-md border-r border-white/5 h-full  transform transition-transform duration-300 ${sidebar ? 'translate-x-0' : '-translate-x-[150%]'
                     }`}
             >
                 <div onClick={() => setSidebar(!sidebar)} className="p-4 cursor-pointer">
@@ -46,12 +46,12 @@ const Navbar = () => {
                         stroke="currentColor"
                         className="w-6 h-6"
                         aria-label="Close Sidebar"
-                        >
+                    >
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             d="M6 18L18 6M6 6l12 12"
-                            />
+                        />
                     </svg>
 
 
@@ -89,79 +89,116 @@ const Navbar = () => {
                             </svg>
 
                         )}Home</li>
-                        <li onClick={() => { navigate("/subscriptions") }} className={`p-4 text-lg flex gap-1  font-mono   hover:scale-110 hover:translate-x-2 transition-all duration-300   ${location.pathname === '/subscriptions' ? 'bg-neutral-800' : ''} `}>
-                        {location.pathname === '/subscriptions' ? (
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" ><path clip-rule="evenodd" d="M5.5 3A1.5 1.5 0 004 4.5h16A1.5 1.5 0 0018.5 3h-13ZM2 7.5A1.5 1.5 0 013.5 6h17A1.5 1.5 0 0122 7.5v11a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 012 18.5v-11Zm8 2.87a.5.5 0 01.752-.431L16 13l-5.248 3.061A.5.5 0 0110 15.63v-5.26Z" fill-rule="evenodd"></path></svg>
+                        {/* <li onClick={() => { navigate("/subscriptions") }} className={`p-4   flex gap-1  font-mono   hover:scale-110 hover:translate-x-2 transition-all duration-300   ${location.pathname === '/subscriptions' ? 'bg-neutral-800' : ''} `}>
+                            {location.pathname === '/subscriptions' ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true" ><path clip-rule="evenodd" d="M5.5 3A1.5 1.5 0 004 4.5h16A1.5 1.5 0 0018.5 3h-13ZM2 7.5A1.5 1.5 0 013.5 6h17A1.5 1.5 0 0122 7.5v11a1.5 1.5 0 01-1.5 1.5h-17A1.5 1.5 0 012 18.5v-11Zm8 2.87a.5.5 0 01.752-.431L16 13l-5.248 3.061A.5.5 0 0110 15.63v-5.26Z" fill-rule="evenodd"></path></svg>
 
-                        ) : ( <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path clip-rule="evenodd" d="M4 4.5A1.5 1.5 0 015.5 3h13A1.5 1.5 0 0120 4.5H4Zm16.5 3h-17v11h17v-11ZM3.5 6A1.5 1.5 0 002 7.5v11A1.5 1.5 0 003.5 20h17a1.5 1.5 0 001.5-1.5v-11A1.5 1.5 0 0020.5 6h-17Zm7.257 4.454a.5.5 0 00-.757.43v4.233a.5.5 0 00.757.429L15 13l-4.243-2.546Z" fill-rule="evenodd"></path></svg>
-                           
-                        )}
-                            Subscriptions</li>
+                            ) : (<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" focusable="false" aria-hidden="true"><path clip-rule="evenodd" d="M4 4.5A1.5 1.5 0 015.5 3h13A1.5 1.5 0 0120 4.5H4Zm16.5 3h-17v11h17v-11ZM3.5 6A1.5 1.5 0 002 7.5v11A1.5 1.5 0 003.5 20h17a1.5 1.5 0 001.5-1.5v-11A1.5 1.5 0 0020.5 6h-17Zm7.257 4.454a.5.5 0 00-.757.43v4.233a.5.5 0 00.757.429L15 13l-4.243-2.546Z" fill-rule="evenodd"></path></svg>
+
+                            )}
+                            Subscriptions</li> */}
+                        <li onClick={() => { navigate("/upload") }} className={`p-4  flex gap-1  font-mono   hover:scale-110 hover:translate-x-2 transition-all duration-300   ${location.pathname === '/subscriptions' ? 'bg-neutral-800' : ''} `}>
+                            {location.pathname === '/upload' ? (
+                               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EFEFEF"><path d="M440-200h80v-167l64 64 56-57-160-160-160 160 57 56 63-63v167ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520h200L520-800v200Z"/></svg>
+
+                            ) : (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#EFEFEF"><path d="M440-200h80v-167l64 64 56-57-160-160-160 160 57 56 63-63v167ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>
+
+                            )}
+                            Upload Video</li>
                         <li onClick={() => { navigate("/myvideos") }} className={`p-4 font-mono  flex  gap-1 hover:scale-110 hover:translate-x-3 transition-all duration-300   ${location.pathname === '/myvideos' ? '' : ''} `}>
-                    {location.pathname==='/myvideos'?(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Z"/></svg>):(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>)}My Videos</li>
-                      
+                            {location.pathname === '/myvideos' ? (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Z" /></svg>) : (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="m380-300 280-180-280-180v360ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z" /></svg>)}My Videos</li>
+
                         {logoUrl ?
-                        <motion.li
-                        onClick={handlelogout}
-                        className={`p-2 flex justify-center items-center rounded-md gap-1 bg-red-600 font-bold font-mono m-3 ${
-                            location.pathname === '/logout' ? 'bg-neutral-700' : ''
-                        }`}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                    >
-                        Logout
-                    </motion.li>
-                            : <motion.li onClick={() => { navigate("/signup") }} className={`p-2 font-mono  flex justify-center items-center font-bold gap-1 bg-gradient-to-l rounded-md from-cyan-500 to-blue-500 hover:bg-gradient-to-r m-3 ${location.pathname === '/register' ? 'bg-neutral-700' : ''} `}    whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 20 }}>Signup</motion.li>}
+                            <motion.li
+                                onClick={handlelogout}
+                                className={`p-2 flex justify-center items-center rounded-md gap-1 bg-red-600 font-bold font-mono m-3 ${location.pathname === '/logout' ? 'bg-neutral-700' : ''
+                                    }`}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                            >
+                                Logout
+                            </motion.li>
+                            : <motion.li onClick={() => { navigate("/signup") }} className={`p-2 font-mono  flex justify-center items-center font-bold gap-1 bg-gradient-to-l rounded-md from-cyan-500 to-blue-500 hover:bg-gradient-to-r m-3 ${location.pathname === '/register' ? 'bg-neutral-700' : ''} `} whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}>Signup</motion.li>}
                     </ul></div>
             </div>
 
-        <div className='fixed w-full top-0 z-10 bg-gradient-to-r backdrop-blur-md text-white flex flex-col '>
-           
-            {/* Navbar */}
-            <div className=" transition-all duration-1000  w-full p-5 sticky top-0 shadow-2xl">
-                <div className={`flex ${showSearch ? 'justify-center' : 'justify-between'}`}>
-                    {/* Sidebar toggle button */}
-                    {!showSearch && (
-                        <div
-                        className="flex justify-center items-center gap-2 cursor-pointer"
-                        onClick={() => setSidebar(!sidebar)}
-                        >
-                            <div className='hover:bg-neutral-700 rounded-full p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                            </svg>
+            <div className='fixed w-full top-0 z-10 bg-gradient-to-r backdrop-blur-md text-white flex flex-col '>
+
+                {/* Navbar */}
+                <div className=" transition-all duration-1000  w-full p-5 sticky top-0 shadow-2xl">
+                    <div className={`flex ${showSearch ? 'justify-center' : 'justify-between'}`}>
+                        {/* Sidebar toggle button */}
+                        {!showSearch && (
+                            <div
+                                className="flex justify-center items-center gap-2 cursor-pointer">
+                                <div onClick={() => setSidebar(!sidebar)} className='hover:bg-neutral-700 rounded-full p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
+                                </div>
+                                <div onClick={() => { navigate("/home") }} className="text-3xl font-semibold font-mono">Vines</div>
                             </div>
-                            <div className="text-3xl font-semibold font-mono">Vines</div>
-                        </div>
-                    )}
+                        )}
 
-                    {/* Search Input */}
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="bg-secondary hidden md:block border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] pl-4 rounded-full"
-                        />
-                    </div>
-
-                    {/* Mobile Search */}
-                    <div className="block md:hidden ">
-                        {showSearch ? (
+                        {/* Search Input */}
+                        <div>
                             <input
-                            type="text"
-                            className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[400px] rounded-full"
-                            placeholder="Search"
-                            autoFocus
-                            onBlur={() => setShowSearch(false)}
+                                type="text"
+                                placeholder="Search"
+                                className="bg-secondary hidden md:block border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] pl-4 rounded-full"
                             />
-                        ) : (
-                            <div className='flex justify-center items-center'>
+                        </div>
+
+                        {/* Mobile Search */}
+                        <div className="block md:hidden ">
+                            {showSearch ? (
+                                <input
+                                    type="text"
+                                    className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[400px] rounded-full"
+                                    placeholder="Search"
+                                    autoFocus
+                                    onBlur={() => setShowSearch(false)}
+                                />
+                            ) : (
+                                <div className='flex justify-center items-center'>
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className="w-6 h-8 text-neutral-500 cursor-pointer"
+                                        onClick={() => setShowSearch(true)}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
+                                        />
+                                    </svg>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Right Icons */}
+                        {!showSearch && (
+                            <div className="flex gap-5">
+                                {/*upload video icon */}
+                                <div >
+
+                                    <svg onClick={() => { navigate("/upload") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
+                                    </svg>
+
+                                </div>
+                              
 
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -169,66 +206,21 @@ const Navbar = () => {
                                     viewBox="0 0 24 24"
                                     strokeWidth="1.5"
                                     stroke="currentColor"
-                                    className="w-6 h-8 text-neutral-500 cursor-pointer"
-                                    onClick={() => setShowSearch(true)}
+                                    className="size-8"
                                 >
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
-                                        />
+                                        d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                    />
                                 </svg>
                             </div>
                         )}
                     </div>
-
-                    {/* Right Icons */}
-                    {!showSearch && (
-                        <div className="flex gap-5">
-                            {/*upload video icon */}
-                            <div >
-
-                                <svg onClick={() => { navigate("/upload") }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
-                                </svg>
-
-                            </div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="size-8"
-                                >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                                    />
-                            </svg>
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="size-8"
-                                >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                                />
-                            </svg>
-                        </div>
-                    )}
                 </div>
-            </div>
 
+            </div>
         </div>
-                    </div>
     );
 };
 
