@@ -63,7 +63,7 @@ const Navbar = () => {
                         (<div className='flex justify-center items-center flex-col'>
 
                             <img src={logoUrl} alt="Channel Logo" className="h-28 w-28 border border-neutral-500 rounded-full object-cover" />
-                            <h3 className='font-mono bg-bordcol  px-2 max-w-32 overflow-hidden rounded-full mt-1 '>{localStorage.getItem("channelName")}</h3>
+                            <h3 className='font-mono backdrop-blur-3xl border border-neutral-500/5  bg-white/5  px-2 max-w-32 overflow-hidden rounded-full mt-1 '>{localStorage.getItem("channelName")}</h3>
                         </div>
 
                         ) : (<div className="h-32 w-32 border-2 border-bordcol rounded-full flex items-center justify-center ">
@@ -151,7 +151,7 @@ const Navbar = () => {
                             <input
                                 type="text"
                                 placeholder="Search"
-                                className="bg-secondary hidden md:block border-bordcol border shadow-2xl p-1 w-80 sm:w-[500px] pl-4 rounded-full"
+                                className="backdrop-blur-2xl placeholder:text-sky-200 bg-black/5 font-mono hidden md:block border-neutral-500 border-2 shadow-2xl p-1 w-80 sm:w-[500px] pl-4 rounded-full"
                             />
                         </div>
 
@@ -160,7 +160,7 @@ const Navbar = () => {
                             {showSearch ? (
                                 <input
                                     type="text"
-                                    className="bg-secondary border-bordcol border shadow-2xl p-1 w-80 sm:w-[400px] rounded-full"
+                                    className="backdrop-blur-3xl bg-black/5 border-bordcol border shadow-2xl p-1 w-80 sm:w-[400px] rounded-full"
                                     placeholder="Search"
                                     autoFocus
                                     onBlur={() => setShowSearch(false)}
@@ -173,7 +173,7 @@ const Navbar = () => {
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         strokeWidth="1.5"
-                                        stroke="currentColor"
+                                        stroke="white"
                                         className="w-6 h-8 text-neutral-500 cursor-pointer"
                                         onClick={() => setShowSearch(true)}
                                     >

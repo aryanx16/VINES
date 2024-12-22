@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const Myvideos = () => {
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -62,10 +63,25 @@ const Myvideos = () => {
     console.log("onclidkckkk",vid)
     navigate(`/video/${vid}`)
   }
+  const formatViews = (num) => {
+    if (num > 1e9) {
+      return (num / 1e9).toFixed(1) + 'B'
+    }
+    if (num >= 1e6) {
+      return (num / 1e6).toFixed(1) + 'M';
+    }
+    if (num >= 1e3) {
+      return (num / 1e3).toFixed(1) + 'K';
+    }
+    if (num < 0) {
+      return 0;
+    }
+    return num;
+  }
   return (
     <div className="text-white bg-neutral-950">
       <Navbar />
-      <div className="bg-gradient-to-r pt-24 from-bgray via-neutral-900 to-black min-h-screen w-full px-8 py-4 font-mono">
+      <div className="pt-20 bg-gradient-to-r  min-h-screen w-full px-8 py-4 font-mono">
         <div className='text-5xl mb-2 font-mono'>My videos</div>
         <div className="overflow-x-auto rounded-sm">
           <table className="w-full table-auto border-collapse text-sm">
@@ -90,7 +106,7 @@ const Myvideos = () => {
                   </td>
                   <td className="px-4 py-2 border border-gray-700 text-left">{vid.Title}</td>
                   <td className="px-4 py-2 border border-gray-700 text-center">{vid.Likes}</td>
-                  <td className="px-4 py-2 border border-gray-700 text-center">{vid.Views}</td>
+                  <td className="px-4 py-2 border border-gray-700 text-center">{formatViews(vid.Views)}</td>
                   <td className="px-4 py-2 border border-gray-700 text-center ">
                     <button
                       onClick={() => handleEdit(vid.VideoId)}
@@ -111,6 +127,7 @@ const Myvideos = () => {
           </table>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

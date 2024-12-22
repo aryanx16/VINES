@@ -4,6 +4,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import HomeLoader from '../loaders/HomeLoader';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
@@ -50,13 +51,13 @@ const Home = () => {
 
   return (<div className=''>
 
-    {loading ? <div className='bg-neutral-950 pt-20'>
+    {loading ? <div className='bg-neutral-950 pt-20 '>
       <Navbar/>
     <HomeLoader/>
     </div> : <div>
 
         <Navbar />
-      <div className='bg-neutral-950 pt-20'>
+      <div className='bg-neutral-950 pt-20 pb-14'>
         <div className='bg-neutral-950 min-h-screen text-white font-mono flex flex-col'>
           <div className='flex flex-wrap justify-center gap-5 '>
             {videos.map((video) => (
@@ -100,6 +101,7 @@ const Home = () => {
         </div>
       </div>
     </div>}
+    <Footer/>
   </div>
   );
 };

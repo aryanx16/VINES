@@ -2,7 +2,7 @@ import React from 'react'
 
 const HomeLoader = () => {
     return (
-        <div className='bg-gradient-to-tr  from-black via-neutral-900 to-black min-h-screen w-screen text-red-500 p-9'>
+        <div className='bg-neutral-950 min-h-screen w-screen text-red-500 p-9'>
 
             <div className='flex flex-wrap animate-pulse flex-grow gap-5 justify-center items-center'>
                 <div>
