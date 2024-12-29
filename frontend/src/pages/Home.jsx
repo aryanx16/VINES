@@ -64,7 +64,7 @@ const Home = () => {
               <div key={video._id} className='relative group cursor-pointer'>
                 {/* Thumbnail */}
                 <div className='relative'>
-                  <img className='w-screen  h-52 sm:w-96 sm:h-56 sm:rounded-2xl group-hover:opacity-0' onClick={() => { handleClick(video._id) }} src={video.ThumbnailUrl} alt="" />
+                  <img className='w-screen object-cover h-52 sm:w-96 sm:h-56 sm:rounded-2xl group-hover:opacity-0' onClick={() => { handleClick(video._id) }} src={video.ThumbnailUrl} alt="" />
                   <video onClick={() => { handleClick(video._id) }}
                     className='absolute  sm:group-hover:scale-105 transition-transform duration-300 top-0 left-0 w-full h-full object-cover rounded-2xl opacity-0 group-hover:opacity-100 '
                     src={video.VideoUrl}

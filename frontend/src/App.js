@@ -14,6 +14,7 @@ import Myvideos from './pages/Myvideos';
 import Subscriptions from './pages/Subscriptions';
 import Video from './pages/Video';
 import NotFound from './pages/NotFound';
+import SearchResults from './pages/SearchResults';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -32,7 +33,8 @@ const router = createBrowserRouter([
   {path:"/myvideos",element:<Myvideos/>},
   {path:"/subscriptions",element:<Subscriptions/>},
   {path:"/video/:vid",element:<Video/>},
-  {path:"/notfound",element:<NotFound/>}
+  {path:"/notfound",element:<NotFound/>},
+  {path:"/search",element:<SearchResults/>}
 ]);
 function App() {
   return (

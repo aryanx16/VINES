@@ -167,7 +167,7 @@ const Video = () => {
             <div className='grid grid-cols-3 '>
               {/* left video section */}
               <div className='text-red-50  col-span-3 lg:col-span-2'>
-                <video controls className='rounded-lg shadow-2xl shadow-neutral-700 w-full mb-2' src={video.VideoUrl}></video>
+                <video controls className='rounded-lg shadow-2xl shadow-neutral-700 max-h-[550px] w-full mb-2' src={video.VideoUrl}></video>
                 {/* below video */}
                 <div className='text-xl px-2  line-clamp-2'>{video.Title}</div>
                 <div className='text-sm text-neutral-400 pl-2 pb-1'> {formatViews(video.Views)} views • {moment(video.createdAt).fromNow()}</div>
@@ -229,9 +229,9 @@ const Video = () => {
                       // backgroundColor: 'rgba(31, 41, 55, 1)',
                     }}
                       transition={{ duration: 0.3 }} onClick={() => { handleClick(vid._id) }} className='flex cursor-pointer   gap-2 rounded-md'>
-                      <div className=''>
+                      <div className='min-w-40'>
                         {/* Right thumbnails */}
-                        <img onClick={() => { handleClick(vid._id) }} src={vid.ThumbnailUrl} className='max-w-40  rounded-md' alt="" />
+                        <img onClick={() => { handleClick(vid._id) }} src={vid.ThumbnailUrl} className='object-cover w-40  rounded-md h-20 ' alt="" />
                       </div>
                       {/* <div className='w-44 h-28  '>
                 <img onClick={()=>{handleClick(vid._id)}} src={vid.ThumbnailUrl} className='min-w-44 w-44 h-24 min-h-24 rounded-md' alt="" />

@@ -99,7 +99,7 @@ const Myvideos = () => {
                 <tr key={vid.VideoId} className="hover:bg-secondary">
                   <td className="px-4 py-2 border border-gray-700 flex items-center gap-4">
                     <img onClick={()=>{handleClick(vid._id)}}
-                      className="w-32 h-20  border-2 border-secondary rounded"
+                      className="w-64 object-cover h-20  border-2 border-secondary rounded"
                       src={vid.ThumbnailUrl}
                       alt="Thumbnail"
                     />

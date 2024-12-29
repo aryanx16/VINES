@@ -22,6 +22,26 @@ VideoRouter.get("/subscribed",CheckAuth,async(req,res)=>{
         return res.json({message:"Please try again",error:e})
     }
 })
+VideoRouter.get("/search",async(req,res)=>{
+    try{
+        const query = req.query.q;
+        if(!query){
+            return res.status(400).json({message:"Invalid Query"})
+        }
+        console.log(query)
+        const results = await Video.find({
+            $or: [
+                { Title: { $regex: query, $options: 'i' } },
+                { Description: { $regex: query, $options: 'i' } },
+                { Tags: { $regex: query, $options: 'i' } }
+            ]
+        }).limit(20).populate('UserId') // Limit to 20 results
+        console.log(results);
+        return res.json(results)
+    }catch(e){
+        return res.json({message:"Please try again",error:e})
+    }
+})
 VideoRouter.get("/fullvideo/:vid",async(req,res)=>{
     try{
         const token =await req.headers.authorization ? req.headers.authorization :false
