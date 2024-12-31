@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import moment from 'moment'
 import { motion } from 'framer-motion'
 import VideoLoader from '../loaders/VideoLoader'
+import { useSearch } from '../context/SearchBarContext'
 // Add loader 
 const Video = () => {
   const { vid } = useParams()
@@ -21,6 +22,8 @@ const Video = () => {
   const [isDislike, setisDislike] = useState(false)
   const [loader, setloader] = useState(true)
   const [views, setviews] = useState(0)
+  const {showSearch, setShowSearch} =  useSearch()
+
   console.log(vid)
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
   useEffect(() => {
@@ -163,7 +166,7 @@ const Video = () => {
         <div className='pt-20 bg-neutral-950'>
 
           <Navbar />
-          <div className="text-white bg-neutral-950 min-h-screen w-full px-4 py-4 sm:px-14 font-mono">
+          <div onClick={()=>{setShowSearch(false)}} className="text-white bg-neutral-950 min-h-screen w-full px-4 py-4 sm:px-14 font-mono">
             <div className='grid grid-cols-3 '>
               {/* left video section */}
               <div className='text-red-50  col-span-3 lg:col-span-2'>

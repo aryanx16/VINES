@@ -5,14 +5,18 @@ import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import HomeLoader from '../loaders/HomeLoader';
 import Footer from '../components/Footer';
+import { useSearch } from '../context/SearchBarContext';
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setloading] = useState(true);
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const {showSearch, setShowSearch} =  useSearch()
+
   const navigate = useNavigate()
   useEffect(() => {
     getVideos();
+    
   }, []);
 
   const handleClick = async (vid) => {
@@ -57,8 +61,8 @@ const Home = () => {
     </div> : <div>
 
         <Navbar />
-      <div className='bg-neutral-950 pt-20 pb-14'>
-        <div className='bg-neutral-950 min-h-screen text-white font-mono flex flex-col'>
+      <div  className='bg-neutral-950 pt-20 pb-14'>
+        <div onClick={()=>{setShowSearch(false)}} className='bg-neutral-950 min-h-screen text-white font-mono flex flex-col'>
           <div className='flex flex-wrap justify-center gap-5 '>
             {videos.map((video) => (
               <div key={video._id} className='relative group cursor-pointer'>

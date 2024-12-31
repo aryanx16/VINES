@@ -4,9 +4,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
+import { useSearch } from '../context/SearchBarContext';
 
 const Myvideos = () => {
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const {showSearch, setShowSearch} =  useSearch()
+
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate()
   useEffect(() => {
@@ -81,7 +84,7 @@ const Myvideos = () => {
   return (
     <div className="text-white bg-neutral-950">
       <Navbar />
-      <div className="pt-20 bg-gradient-to-r  min-h-screen w-full px-8 py-4 font-mono">
+      <div onClick={()=>{setShowSearch(false)}} className="pt-20 bg-gradient-to-r  min-h-screen w-full px-8 py-4 font-mono">
         <div className='text-5xl mb-2 font-mono'>My videos</div>
         <div className="overflow-x-auto rounded-sm">
           <table className="w-full table-auto border-collapse text-sm">

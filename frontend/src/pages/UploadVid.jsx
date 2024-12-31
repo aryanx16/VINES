@@ -5,10 +5,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { Upload } from 'lucide-react'
+import { useSearch } from '../context/SearchBarContext'
 
 const UploadVid = () => {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
     const navigate = useNavigate()
+    const {showSearch, setShowSearch} =  useSearch()
     const [title ,setTitle]=useState("")
     const [desc,setDesc]=useState("")
     const [category,setCategory]=useState("")
@@ -88,7 +90,7 @@ const UploadVid = () => {
   return (
     <div className=" text-white h-screen min-w-full flex flex-col bg-gradient-to-r from-bgray via-neutral-900 to-black transition-all duration-1000">
                 <Navbar/>
-                <div className="flex-1 flex justify-center items-center   ">
+                <div onClick={()=>{setShowSearch(false)}} className="flex-1 flex justify-center items-center   ">
 
                     <div className="flex items-center flex-col">
                         <h1 className="text-6xl font-bold ">Upload Video</h1>

@@ -15,6 +15,7 @@ import Subscriptions from './pages/Subscriptions';
 import Video from './pages/Video';
 import NotFound from './pages/NotFound';
 import SearchResults from './pages/SearchResults';
+import { SearchProvider } from './context/SearchBarContext';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,14 +35,18 @@ const router = createBrowserRouter([
   {path:"/subscriptions",element:<Subscriptions/>},
   {path:"/video/:vid",element:<Video/>},
   {path:"/notfound",element:<NotFound/>},
-  {path:"/search",element:<SearchResults/>}
+  {path:"/search",element:<SearchResults/>},
+  {path:"/*",element:<NotFound/>}
 ]);
 function App() {
   return (
    <>
+   <SearchProvider>
+
     <RouterProvider router={router}>
     </RouterProvider>
     <ToastContainer />
+   </SearchProvider>
    </>
   );
 }

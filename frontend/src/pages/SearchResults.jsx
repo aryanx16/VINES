@@ -4,10 +4,13 @@ import moment from 'moment';
 import { useLocation, useNavigate } from 'react-router-dom';
 import HomeLoader from '../loaders/HomeLoader';
 import Footer from '../components/Footer';
+import { useSearch } from '../context/SearchBarContext';
 
 const SearchResults = () => {
     const [videos, setVideos] = useState([]);
     const [loading, setloading] = useState(false);
+    const {showSearch, setShowSearch} =  useSearch()
+
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
     const navigate = useNavigate()
     const location = useLocation();
@@ -39,14 +42,23 @@ const SearchResults = () => {
     return (
         <div className=''>
 
-        {results.length<1 ? <div className='text-white min-h-screen bg-neutral-950 pt-20 '>
+        {results.length<1 ? <div onClick={()=>{setShowSearch(false)}} className='text-white min-h-screen bg-neutral-950 pt-20 '>
           <Navbar/>
-        No results found
+          <div className='flex flex-col justify-center items-center'>
+
+          <img src="https://cdni.iconscout.com/illustration/premium/thumb/page-not-found-illustration-download-in-svg-png-gif-file-formats--404-error-3d-character-with-different-scene-pack-people-illustrations-1815080.png?f=webp" alt="" />
+       <div className='flex flex-col text-3xl font-mono'>
+        <div className='flex justify-center items-center'>
+          No Results Found
+        </div>
+        <div className='text-center'>Try Searching another videos</div>
+       </div>
+          </div>
         </div> : <div>
     
             <Navbar />
-          <div className='bg-neutral-950 pt-20 pb-14'>
-            <div className='bg-neutral-950 min-h-screen text-white font-mono flex flex-col'>
+          <div  className='bg-neutral-950 pt-20 pb-14'>
+            <div onClick={()=>{setShowSearch(false)}} className='bg-neutral-950 min-h-screen text-white font-mono flex flex-col'>
               <div className='flex flex-wrap justify-center gap-5 '>
                 {results.map((video) => (
                   <div key={video._id} className='relative group cursor-pointer'>
