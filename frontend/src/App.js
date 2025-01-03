@@ -16,10 +16,11 @@ import Video from './pages/Video';
 import NotFound from './pages/NotFound';
 import SearchResults from './pages/SearchResults';
 import { SearchProvider } from './context/SearchBarContext';
+import About from './pages/About';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: <About/>,
   },
   {
     path: "/signin",

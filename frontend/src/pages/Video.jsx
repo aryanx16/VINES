@@ -7,6 +7,7 @@ import moment from 'moment'
 import { motion } from 'framer-motion'
 import VideoLoader from '../loaders/VideoLoader'
 import { useSearch } from '../context/SearchBarContext'
+import ShinyText from '../Animations/ShinyText'
 // Add loader 
 const Video = () => {
   const { vid } = useParams()
@@ -170,7 +171,7 @@ const Video = () => {
             <div className='grid grid-cols-3 '>
               {/* left video section */}
               <div className='text-red-50  col-span-3 lg:col-span-2'>
-                <video controls className='rounded-lg shadow-2xl shadow-neutral-700 max-h-[550px] w-full mb-2' src={video.VideoUrl}></video>
+                <video controls className='rounded-lg shadow-lg shadow-neutral-800 max-h-[550px] w-full mb-2' src={video.VideoUrl}></video>
                 {/* below video */}
                 <div className='text-xl px-2  line-clamp-2'>{video.Title}</div>
                 <div className='text-sm text-neutral-400 pl-2 pb-1'> {formatViews(video.Views)} views • {moment(video.createdAt).fromNow()}</div>
@@ -188,12 +189,25 @@ const Video = () => {
                       whileTap={{ scale: 0.9 }}
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }} onClick={() => { handlesubscribe(video.UserId._id) }} className={`hidden  sm:block ${isSub ? 'bg-gradient-to-l from-purple-300 to-purple-500 shadow-lg shadow-purple-300' : 'bg-gradient-to-l px-3 transition-all duration-500 from-cyan-500 to-blue-500 shadow-lg shadow-sky-300'} text-center w-36  text-white  p-1 px-2 rounded-full`}>
-                      <button className=''>{isSub ? 'Subscribed' : ' Subscribe '}</button>
+                      exit={{ opacity: 0, y: 20 }} onClick={() => { handlesubscribe(video.UserId._id) }} className={`hidden sm:flex ${isSub?"bg-neutral-900":"bg-neutral-950"} shadow-lg border shadow-neutral-800  cursor-pointer border-neutral-700 p-2 rounded-md hover:bg-neutral-950 px-4 hover:scale-105 `}>
+                      <button className=''><ShinyText text={isSub ? 'Subscribed' : ' Subscribe '} disabled={false} speed={3} className='custom-class font-bold' />
+                      </button>
                     </motion.div>
+                    {/* {!isSub?
+                    <motion.div whileTap={{ scale: 0.85 }} onClick={() => { handlesubscribe(video.UserId._id) }} className='hidden sm:flex  shadow-lg border shadow-neutral-800 hover:shadow-neutral-600 cursor-pointer border-neutral-700 p-2 rounded-md hover:bg-neutral-950 px-4 hover:scale-105 bg-neutral-950'>
+                        
+                    <ShinyText text="Subscribe" disabled={false} speed={3} className='custom-class font-bold' />
+                    </motion.div>
+                    :
+                    <div onClick={() => { handlesubscribe(video.UserId._id) }} className='hidden sm:flex border shadow-lg   cursor-pointer border-neutral-700 p-2 rounded-md hover:bg-neutral-900 hover:scale-105 bg-neutral-900'>
+
+                    <ShinyText text="Subscribed" disabled={false} speed={3} className='custom-class font-bold' />
+                    </div>  
+                  } */}
+
                   </div>
                   {/* below video right side */}
-                  <div className='flex cursor-pointer border-neutral-600 items-center gap-4 px-2 border md:px-5 md:py-1 bg-neutral-800 rounded-full bg-gradient-to-r from-purple-600/30 via-purple-500/30 to-blue-500/30'>
+                  <div className='flex cursor-pointer p-1 border-neutral-700 shadow-lg shadow-neutral-800 items-center gap-4 px-2 border md:px-5 md:py-1  rounded-full bg-neutral-950'>
                     {/* like */}
                     <div className='flex' onClick={() => { handleLike(video._id) }}>
                       {isLike ? (
@@ -205,7 +219,7 @@ const Video = () => {
                       {likes}
 
                     </div>
-                    <div>|</div>
+                    <div className='text-neutral-500'>|</div>
                     {/* dislike */}
                     <div onClick={() => { handleDislike(video._id) }} className='flex'>
                       {isDislike ? (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="M240-840h400v520L360-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 1.5-15t4.5-15l120-282q9-20 30-34t44-14Zm480 520v-520h160v520H720Z" /></svg>) : (<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#F3F3F3"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" /></svg>)}
@@ -214,11 +228,22 @@ const Video = () => {
                   </div>
                 </div>
 
-                <motion.li onClick={() => { handlesubscribe(video.UserId._id) }} className={`p-1 sm:hidden block font-mono ${isSub ? 'bg-gradient-to-l from-purple-300 to-purple-500 shadow-lg shadow-purple-300' : 'bg-gradient-to-l from-cyan-500 to-blue-500 shadow-lg shadow-sky-300'}   flex justify-center items-center font-bold gap-1  rounded-full  hover:bg-gradient-to-r m-3  `} whileHover={{ scale: 1.1 }}
+                {/* <motion.li onClick={() => { handlesubscribe(video.UserId._id) }} className={`p-1 sm:hidden block shadow-purple-300' : 'bg-gradient-to-l from-cyan-500 to-blue-500 shadow-lg shadow-sky-300'}   flex justify-center items-center font-bold gap-1  rounded-full  hover:bg-gradient-to-r m-3  `} whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}>{isSub ? 'Subscribed' : 'Subscribe'}</motion.li>
+                  exit={{ opacity: 0, y: 20 }}>{isSub ? 'Subscribed' : 'Subscribe'}</motion.li> */}
+                  {!isSub?
+                   <motion.div whileTap={{ scale: 0.85 }} onClick={() => { handlesubscribe(video.UserId._id) }} className='text-center rounded-full justify-center items-center sm:hidden flex   shadow-lg border shadow-neutral-800 hover:shadow-neutral-600 cursor-pointer border-neutral-700 p-2 mt-2 font-bold hover:bg-neutral-950 px-4 hover:scale-105 bg-neutral-950'>
+                        
+                        <ShinyText text="Subscribe" disabled={false} speed={3} className='custom-class font-bold' />
+                        </motion.div>
+                  :<div onClick={() => { handlesubscribe(video.UserId._id) }} className='text-center rounded-full justify-center items-center sm:hidden flex   shadow-lg border shadow-neutral-800 hover:shadow-neutral-600 cursor-pointer border-neutral-700 p-2 mt-2 font-bold  px-4 hover:scale-105 bg-neutral-900'>
+                        
+                  <ShinyText text="Subscribed" disabled={false} speed={3} className='custom-class font-bold' />
+                  </div>  
+                }
+                {/* <ShinyText text="Subscribe" disabled={false} speed={3} className='custom-class' /> */}
 
               </div>
               {/* right recommended videos */}

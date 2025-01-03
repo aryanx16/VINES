@@ -1,24 +1,10 @@
 import React from 'react'
-const LINKS = [
-    {
-        title: "Product",
-        items: ["Overview", "Features", "Solutions", "Tutorials"],
-    },
-    {
-        title: "Company",
-        items: ["About us", "Careers", "Press", "News"],
-    },
-    {
-        title: "Resource",
-        items: ["Blog", "Newsletter", "Events", "Help center"],
-    },
-];
 
 const currentYear = new Date().getFullYear();
 
 const Footer = () => {
     return (
-        <footer className="relative w-full bg-neutral-950 text-neutral-500 ">
+        <footer className="relative w-full bg-black text-neutral-500 ">
 
             <div className=" flex px-24 w-full flex-col items-center justify-center   py-4 md:flex-row md:justify-between">
                 <div
