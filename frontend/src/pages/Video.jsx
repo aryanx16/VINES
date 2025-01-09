@@ -11,6 +11,9 @@ import ShinyText from '../Animations/ShinyText'
 // Add loader 
 const Video = () => {
   const { vid } = useParams()
+  const [newcomment, setnewcomment] = useState("")
+  const [logourl, setlogourl] = useState(localStorage.getItem('logoUrl'))
+  const [comments, setcomments] = useState([])
   const navigate = useNavigate()
   const [video, setVideo] = useState({})
   const [channelName, setchannelName] = useState("")
@@ -23,20 +26,49 @@ const Video = () => {
   const [isDislike, setisDislike] = useState(false)
   const [loader, setloader] = useState(true)
   const [views, setviews] = useState(0)
-  const {showSearch, setShowSearch} =  useSearch()
-
+  const { showSearch, setShowSearch } = useSearch()
+  const [showcomments,setshowcomments] = useState(false)
   console.log(vid)
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
   useEffect(() => {
+    getcomments()
     getvideo()
     getallvideo()
     // console.log(video, "KJfdkfjdkfj")
   }, [vid])
+  const handlecomment = async (e) => {
+    e.preventDefault()
+    try{
+      const response = await axios.post(`${BACKEND_URL}/comment/${vid}`,{CommentText:newcomment},{
+        headers:{
+          Authorization :`Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      console.log(response)
+      getcomments()
+      setnewcomment("")
+    }catch(e){
+      console.log(e)
+      toast.error(e.response?.data?.message || "Please try again")
+    }
+  }
   const handleClick = async (vid) => {
     // console.log("onclidkckkk",vid)
     navigate(`/video/${vid}`)
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
+  }
+  const getcomments = async () => {
+    try {
+      // console.log("fdkjd")
+      const response = await axios.get(`${BACKEND_URL}/comment/${vid}`)
+      // console.log("jfdfjd", response.data.Comments);
+      setcomments(response.data.Comments)
+      // console.log(comments);
+    } catch (e) {
+      console.log(e);
+      toast.error(e.response?.data?.message || "Please try again")
+    }
   }
   const getvideo = async () => {
     try {
@@ -45,7 +77,7 @@ const Video = () => {
           Authorization: localStorage.getItem("token")
         }
       })
-      console.log(response)
+      // console.log(response)
       if (response.status === 200) {
         setVideo(response.data.video)
         setchannelName(response.data.video.UserId.ChannelName)
@@ -167,7 +199,7 @@ const Video = () => {
         <div className='pt-20 bg-neutral-950'>
 
           <Navbar />
-          <div onClick={()=>{setShowSearch(false)}} className="text-white bg-neutral-950 min-h-screen w-full px-4 py-4 sm:px-14 font-mono">
+          <div onClick={() => { setShowSearch(false) }} className="text-white bg-neutral-950 min-h-screen w-full  py-4 sm:px-14 font-mono">
             <div className='grid grid-cols-3 '>
               {/* left video section */}
               <div className='text-red-50  col-span-3 lg:col-span-2'>
@@ -189,7 +221,7 @@ const Video = () => {
                       whileTap={{ scale: 0.9 }}
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }} onClick={() => { handlesubscribe(video.UserId._id) }} className={`hidden sm:flex ${isSub?"bg-neutral-900":"bg-neutral-950"} shadow-lg border shadow-neutral-800  cursor-pointer border-neutral-700 p-2 rounded-md hover:bg-neutral-950 px-4 hover:scale-105 `}>
+                      exit={{ opacity: 0, y: 20 }} onClick={() => { handlesubscribe(video.UserId._id) }} className={`hidden sm:flex ${isSub ? "bg-neutral-900" : "bg-neutral-950"} shadow-lg border shadow-neutral-800  cursor-pointer border-neutral-700 p-2 rounded-md hover:bg-neutral-950 px-4 hover:scale-105 `}>
                       <button className=''><ShinyText text={isSub ? 'Subscribed' : ' Subscribe '} disabled={false} speed={3} className='custom-class font-bold' />
                       </button>
                     </motion.div>
@@ -227,26 +259,131 @@ const Video = () => {
                     </div>
                   </div>
                 </div>
+                <div>
+
+                </div>
 
                 {/* <motion.li onClick={() => { handlesubscribe(video.UserId._id) }} className={`p-1 sm:hidden block shadow-purple-300' : 'bg-gradient-to-l from-cyan-500 to-blue-500 shadow-lg shadow-sky-300'}   flex justify-center items-center font-bold gap-1  rounded-full  hover:bg-gradient-to-r m-3  `} whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}>{isSub ? 'Subscribed' : 'Subscribe'}</motion.li> */}
-                  {!isSub?
-                   <motion.div whileTap={{ scale: 0.85 }} onClick={() => { handlesubscribe(video.UserId._id) }} className='text-center rounded-full justify-center items-center sm:hidden flex   shadow-lg border shadow-neutral-800 hover:shadow-neutral-600 cursor-pointer border-neutral-700 p-2 mt-2 font-bold hover:bg-neutral-950 px-4 hover:scale-105 bg-neutral-950'>
-                        
-                        <ShinyText text="Subscribe" disabled={false} speed={3} className='custom-class font-bold' />
-                        </motion.div>
-                  :<div onClick={() => { handlesubscribe(video.UserId._id) }} className='text-center rounded-full justify-center items-center sm:hidden flex   shadow-lg border shadow-neutral-800 hover:shadow-neutral-600 cursor-pointer border-neutral-700 p-2 mt-2 font-bold  px-4 hover:scale-105 bg-neutral-900'>
-                        
-                  <ShinyText text="Subscribed" disabled={false} speed={3} className='custom-class font-bold' />
-                  </div>  
+                {!isSub ?
+                  <motion.div whileTap={{ scale: 0.85 }} onClick={() => { handlesubscribe(video.UserId._id) }} className='text-center transition-all duration-500 rounded-full justify-center items-center sm:hidden flex border  hover:shadow-neutral-600 cursor-pointer border-neutral-700 p-2 m-2 font-bold  px-4 hover:scale-105 bg-neutral-950 box-border'>
+
+                    <ShinyText text="Subscribe" disabled={false} speed={3} className='custom-class font-bold' />
+                  </motion.div>
+                  : <div onClick={() => { handlesubscribe(video.UserId._id) }} className='text-center rounded-full justify-center items-center sm:hidden flex   shadow-lg border   cursor-pointer border-neutral-700 p-1 m-2 px-4 font-bold hover:scale-105 bg-neutral-900 box-border'>
+
+                    <ShinyText text="Subscribed" disabled={false} speed={3} className='custom-class font-bold text-lg' />
+                  </div>
                 }
                 {/* <ShinyText text="Subscribe" disabled={false} speed={3} className='custom-class' /> */}
 
+                {/* comments section below sub btn */}
+                <div className='mt-3 p-2'>
+                  <div className='text-xl font-sans'>
+                    Comments
+                  </div>
+                  <div className='flex gap-1 mt-2 '>
+                    <div>
+                      <img className='w-10  rounded-full' src={logourl} alt="" />
+                    </div>
+                    <div className='w-full'>
+                      <div className=' mb-5'>
+                        <form className='flex box-border' onSubmit={handlecomment}>
+                          <div className='w-full border-b-2'>
+
+                            <input onKeyDown={(e)=>{if(e.key==='Enter')handlecomment(e)}} value={newcomment} required onChange={(e) => { setnewcomment(e.target.value) }} placeholder='Add a Comment' className='w-full bg-neutral-950  rounded-md border-none' type="text" />
+                          </div>
+                          <button type='submit'>
+
+                          <ShinyText text="Add" disabled={false} speed={3} className='custom-class border px-1 ml-4 hover:scale-105 transition-all duration-300 cursor-pointer  rounded-md text-lg border-neutral-500 font-bold' />
+                          </button>
+                          {/* <button>Add</button> */}
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  {/* comments for mobile */}
+                  <div className='lg:hidden transition-all duration-700'>
+                    <div className=' p-1 transition-all duration-700  rounded-full'>
+                      {!showcomments && <p className='flex justify-center items-center bg-neutral-900 w-40  rounded-md py-1' onClick={(e)=>{setshowcomments(true)}}>Show Comments</p>}
+                      {showcomments && <p className='flex justify-center items-center bg-neutral-900 w-40  rounded-md  ' onClick={(e)=>{setshowcomments(false)}}>Hide Comments</p>}
+                      
+                      {showcomments && 
+                      <div className=''>
+                      {comments.map((comment) => {
+                        return (
+                          <motion.div className='transition-all duration-700'>
+                            {/* one whole comment box */}
+                            <div className='flex gap-1 my-2 flex-shrink-0'>
+                              {/* logo */}
+                              <div className='w-11 h-11  flex-shrink-0'>
+                                <img src={comment.UserId.LogoUrl} className='w-11 h-11 rounded-full' alt="" />
+                              </div>
+                              <div>
+                                {/* chnl name */}
+                                <div className='text-sm text-neutral-400 font-sans'>
+                                  @{comment.UserId.ChannelName} • {moment(comment.createdAt).fromNow()}
+                                </div>
+                                {/* comment */}
+                                <div className='line-clamp-6'>
+                                  {comment.CommentText}
+                                </div>
+                                {/* like n dislike */}
+                                <div className='flex gap-2'>
+                                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="19px" fill="#e8eaed"><path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" /></svg>
+    
+                                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="19px" fill="#F3F3F3"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" /></svg>
+    
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      })}
+                      </div>
+                      }
+                    </div>
+                  </div>
+                  {/* for large screens */}
+                  <div className='hidden lg:block  transition-all duration-700'>
+                  {comments.map((comment) => {
+                    return (
+                      <div>
+                        {/* one whole comment box */}
+                        <div className='flex gap-1 my-2 flex-shrink-0'>
+                          {/* logo */}
+                          <div className='w-11 h-11  flex-shrink-0'>
+                            <img src={comment.UserId.LogoUrl} className='w-11 h-11 rounded-full' alt="" />
+                          </div>
+                          <div>
+                            {/* chnl name */}
+                            <div className='text-sm text-neutral-400 font-sans'>
+                              @{comment.UserId.ChannelName} • {moment(comment.createdAt).fromNow()}
+                            </div>
+                            {/* comment */}
+                            <div className='line-clamp-6'>
+                              {comment.CommentText}
+                            </div>
+                            {/* like n dislike */}
+                            <div className='flex gap-2'>
+                              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="19px" fill="#e8eaed"><path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" /></svg>
+
+                              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="19px" fill="#F3F3F3"><path d="M240-840h440v520L400-40l-50-50q-7-7-11.5-19t-4.5-23v-14l44-174H120q-32 0-56-24t-24-56v-80q0-7 2-15t4-15l120-282q9-20 30-34t44-14Zm360 80H240L120-480v80h360l-54 220 174-174v-406Zm0 406v-406 406Zm80 34v-80h120v-360H680v-80h200v520H680Z" /></svg>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                  </div>
+                </div>
               </div>
               {/* right recommended videos */}
+              {!showcomments && 
               <div className='col-span-3 lg:col-span-1 flex flex-col gap-2 pl-4 pt-4 sm:pt-0'>
                 <h2 className="text-lg font-semibold ">Recommended Videos</h2>
                 {/* <div className='flex flex-col gap-2'></div> */}
@@ -280,6 +417,7 @@ const Video = () => {
                 })}
 
               </div>
+              }
             </div>
             <div className=' flex'></div>
           </div>

@@ -25,7 +25,7 @@ const Myvideos = () => {
       });
       if (response.status === 200) {
         setVideos(response.data.videos);
-        console.log(response.data.videos)
+        // console.log(response.data.videos)
       } else {
         console.error('Error:', response);
       }

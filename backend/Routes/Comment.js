@@ -21,8 +21,8 @@ CommentRouter.get("/:vid",async(req,res)=>{
             console.log("VIDEO NOT FOUND");
             return res.status(301).json({message:"VIDEO NOT FOUND"});
         }
-        const Comments = await Comment.find({VideoId:VideoId})
-        console.log(Comments)
+        const Comments = await Comment.find({VideoId:VideoId}).limit(150).sort({createdAt:-1}).populate('UserId')
+        // console.log(Comments)
         return res.json({Comments})
     }catch(e){
         console.log("ERROR IN COMMENTS",e);
@@ -52,7 +52,7 @@ CommentRouter.post("/:vid",CheckAuth,async(req,res)=>{
         console.log("Comment",AddedComment)
         // console.log(CommentText)
         console.log("/comment is running perfectly")
-        res.json({message:"COMMENT FETCHED SUCCESSFULLY.."})
+        res.json({message:"COMMENT ADDED SUCCESSFULLY.."})
     }catch(e){
         console.log("ERROR IN ",e)
         return res.status(401).json({message:"ERROR IN COMMENT"})

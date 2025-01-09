@@ -25,7 +25,7 @@ const Signin = () => {
 
       axios.post(`${BACKEND_URL}/user/login`, formdata).then((response) => {
         toast.success(response.data.message)
-        console.log(response)
+        // console.log(response)
         localStorage.setItem("token",response.data.token)
       localStorage.setItem("logoUrl",response.data.logoUrl)
       localStorage.setItem("channelName",response.data.channelName)

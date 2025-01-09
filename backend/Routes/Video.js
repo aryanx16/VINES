@@ -33,7 +33,8 @@ VideoRouter.get("/search",async(req,res)=>{
             $or: [
                 { Title: { $regex: query, $options: 'i' } },
                 { Description: { $regex: query, $options: 'i' } },
-                { Tags: { $regex: query, $options: 'i' } }
+                { Tags: { $regex: query, $options: 'i' } },
+                { Category: { $regex: query, $options: 'i' } }
             ]
         }).limit(20).populate('UserId') // Limit to 20 results
         console.log(results);
@@ -45,8 +46,8 @@ VideoRouter.get("/search",async(req,res)=>{
 VideoRouter.get("/fullvideo/:vid",async(req,res)=>{
     try{
         const token =await req.headers.authorization ? req.headers.authorization :false
-        console.log(token)
-        console.log(req.headers.authorization)
+        // console.log(token)
+        // console.log(req.headers.authorization)
         let user = null
         if(token){
             try{
@@ -57,9 +58,9 @@ VideoRouter.get("/fullvideo/:vid",async(req,res)=>{
             }
         }
         const vid = req.params.vid
-        console.log("video idddd ",vid)
+        // console.log("video idddd ",vid)
         const video =await Video.findById(vid).populate('UserId')
-        console.log("KDJFKF")
+        // console.log("KDJFKF")
         if(!video){
             return res.json({message:"Video not found"})
         }
@@ -78,7 +79,7 @@ VideoRouter.post("/",CheckAuth,async(req,res)=>{
     try{
         const token = req.headers.authorization.split(" ")[1]
         const user = jwt.verify(token,process.env.jwtSecret)
-        
+        // console.log(req.files.Video.tempFilePath);
         const UploadedVideo = await cloudinary.uploader.upload(req.files.Video.tempFilePath,{
             resource_type:'video'
         })

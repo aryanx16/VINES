@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound';
 import SearchResults from './pages/SearchResults';
 import { SearchProvider } from './context/SearchBarContext';
 import About from './pages/About';
+import Experiment from './pages/Experiment';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,7 +38,8 @@ const router = createBrowserRouter([
   {path:"/video/:vid",element:<Video/>},
   {path:"/notfound",element:<NotFound/>},
   {path:"/search",element:<SearchResults/>},
-  {path:"/*",element:<NotFound/>}
+  {path:"/*",element:<NotFound/>},
+  {path:"/experiment",element:<Experiment/>}
 ]);
 function App() {
   return (

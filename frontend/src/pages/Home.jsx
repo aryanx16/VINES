@@ -20,14 +20,14 @@ const Home = () => {
   }, []);
 
   const handleClick = async (vid) => {
-    console.log("onclidkckkk", vid)
+    // console.log("onclidkckkk", vid)
     navigate(`/video/${vid}`)
     window.scrollTo({top:0,behavior:'smooth'})
   }
   const getVideos = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/video/all`);
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         setVideos(response.data);
         setloading(false)

@@ -15,7 +15,7 @@ const Navbar = () => {
     const navigate = useNavigate()
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
     const location = useLocation()
-    console.log(location.pathname === '/home')
+    // console.log(location.pathname === '/home')
     const logoUrl = localStorage.getItem("logoUrl")
     const channelName = localStorage.getItem("channelName");
     useEffect(() => {
@@ -44,7 +44,7 @@ const Navbar = () => {
             }
             console.log("searching....")
             const response = await axios.get(`${BACKEND_URL}/video/search?q=${search}`)
-            console.log(response)
+            // console.log(response)
             if(response.status === 200 ){
                 navigate(`/search`,{state:{results:response.data}})
             }
@@ -102,13 +102,13 @@ const Navbar = () => {
                             {/* </div> */}
                             <ul className="mt-4 text-white cursor-pointer">
                                 <li onClick={() => { navigate("/home") }} className={`p-4 font-mono flex gap-1 text-lg hover:scale-110 hover:translate-x-3 transition-all duration-300  ${location.pathname === '/home' ? '' : ''}`}> {location.pathname === '/home' ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                         <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                                         <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                                     </svg>
             
                                 ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                                     </svg>
             
@@ -176,8 +176,9 @@ const Navbar = () => {
                         <div className='flex'>
                             <input
                                 type="text"
-                                onChange={(e)=>{setsearch(e.target.value);console.log(search)}}
+                                onChange={(e)=>{setsearch(e.target.value);}}
                                 placeholder="Search"
+                                onKeyDown={(e)=>{if(e.key==='Enter'){handlesearch()}}}
                                 className="backdrop-blur-2xl placeholder:text-sky-100 bg-neutral-700/5 font-mono hidden md:block border-neutral-500 border-2 shadow-2xl p-1 w-80 sm:w-[500px] pl-4 rounded-l-full"
                             />
                             <button onClick={handlesearch} className='hidden border-l-0 border-neutral-500 border-2 shadow-2xl rounded-r-full px-1  text-neutral-100 md:block'>
@@ -255,7 +256,7 @@ const Navbar = () => {
                                     />
                                 </svg> */}
                                 {logoUrl?
-                                <img src={logoUrl} className='h-8 w-8 rounded-full' alt="" />
+                                <img src={logoUrl} className='h-9 w-9 border border-neutral-400 rounded-full' alt="" />
                                 :
                                 <img src="https://cdn3d.iconscout.com/3d/premium/thumb/user-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--account-avatar-people-business-pack-finance-illustrations-4280969.png?f=webp" className='h-9 w-9 border-2 rounded-full border-blue-300' alt="" />
                             }

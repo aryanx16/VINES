@@ -10,7 +10,6 @@ const SideMenu = () => {
     const [search, setsearch] = useState("")
     const navigate = useNavigate()
     const location = useLocation()
-    console.log(location.pathname === '/home')
     const logoUrl = localStorage.getItem("logoUrl")
     const channelName = localStorage.getItem("channelName");
     useEffect(() => {
