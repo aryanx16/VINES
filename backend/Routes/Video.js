@@ -305,6 +305,7 @@ VideoRouter.get("/all",async(req,res)=>{
 
         const AllVideos = await Video.find({}).populate('UserId')
         // console.log(AllVideos)
+        const RandomVideos = AllVideos.sort(() => Math.random() - 0.5);
         res.send(AllVideos)
     }
     catch(e){

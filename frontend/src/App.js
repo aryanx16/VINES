@@ -18,6 +18,7 @@ import SearchResults from './pages/SearchResults';
 import { SearchProvider } from './context/SearchBarContext';
 import About from './pages/About';
 import Experiment from './pages/Experiment';
+import Profile from './pages/Profile';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,9 +40,11 @@ const router = createBrowserRouter([
   {path:"/notfound",element:<NotFound/>},
   {path:"/search",element:<SearchResults/>},
   {path:"/*",element:<NotFound/>},
+  {path:"/u/:uid",element:<Profile/>},
   {path:"/experiment",element:<Experiment/>}
 ]);
 function App() {
+  console.log("ReRendered")
   return (
    <>
    <SearchProvider>

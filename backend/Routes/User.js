@@ -5,6 +5,7 @@ const bcryptjs = require("bcryptjs")
 const User = require("../models/User")
 const jwt = require("jsonwebtoken")
 const CheckAuth = require("../middleware/CheckAuth")
+const Video = require("../models/Video")
 require("dotenv").config()
 const ClientRouter = express.Router();
 cloudinary.config({
@@ -15,6 +16,29 @@ cloudinary.config({
 ClientRouter.get("/", (req, res) => {
     console.log("User ROUTER IS WORKING PERFECTLY...")
     res.send("User ROUTER IS WORKING PERFECTLY...")
+})
+
+ClientRouter.get("/u/:userid", async (req, res) => {
+    try {
+        const token = await req.headers.authorization ? req.headers.authorization : false
+
+        const userid = req.params.userid
+        let userlive = null
+        if (token) {
+            try {
+                userlive = await jwt.verify(token, process.env.jwtSecret)
+            }catch(e){
+                console.log(e)
+            }
+        }
+        const user = await User.findOne({ _id: userid }, { LogoUrl: 1, ChannelName: 1, Email: 1, Subscribers: 1,SubscribedBy:1 })
+        const videos = await Video.find({ UserId: userid })
+        const isSub = userlive? user.SubscribedBy.includes(userlive._id):false
+        return res.json({ user, videos ,isSub})
+    } catch (e) {
+        console.log("error : ", e);
+        return res.json({ message: "Error in profile" })
+    }
 })
 
 ClientRouter.post("/register", async (req, res) => {
@@ -59,7 +83,7 @@ ClientRouter.post("/login", async (req, res) => {
             console.log("INCORRECT PASSWORD")
             return res.status(401).json({ message: "Incorrect Password" })
         }
-    const token = jwt.sign({ _id: isUser._id, Email: isUser.Email, ChannelName: isUser.ChannelName, Phone: isUser.Phone, LogoId: isUser.LogoId }, process.env.jwtSecret)
+        const token = jwt.sign({ _id: isUser._id, Email: isUser.Email, ChannelName: isUser.ChannelName, Phone: isUser.Phone, LogoId: isUser.LogoId }, process.env.jwtSecret)
         return res.json({
             token: token,
             userId: isUser._id,
@@ -68,7 +92,7 @@ ClientRouter.post("/login", async (req, res) => {
             subscribers: isUser.Subscribers,
             logoId: isUser.LogoId,
             logoUrl: isUser.LogoUrl,
-            subscribedChannels:isUser.SubscribedChannels,
+            subscribedChannels: isUser.SubscribedChannels,
             message: "Logged in successfully"
         })
 
@@ -119,7 +143,7 @@ ClientRouter.put("/profile/:uid", async (req, res) => {
 
     }
 })
-ClientRouter.put("/subscribe/:youtuberid",CheckAuth, async (req, res) => {
+ClientRouter.put("/subscribe/:youtuberid", CheckAuth, async (req, res) => {
     try {
 
         const token = req.headers.authorization.split(" ")[1]

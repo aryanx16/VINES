@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Navbar from "../components/Navbar";
 export default function SelectDropdownExample() {
   const [selectedOption, setSelectedOption] = useState('');
 
@@ -8,19 +8,11 @@ export default function SelectDropdownExample() {
   };
 
   return (
-    <div>
-      <label>
-        Select an option:
-        <select value={selectedOption} onChange={handleChange}>
-          <option value="">Select...</option>
-          <option value="Option 1">Option 1</option>
-          <option value="Option 2">Option 2</option>
-          <option value="Option 3">Option 3</option>
-        </select>
-      </label>
-      <div>
-        <h3>Selected Option: {selectedOption}</h3>
-      </div>
+    <div className='bg-neutral-950 w-screen min-h-screen absolute top-0'>
+      <Navbar/>
+      <section>
+      <div></div>
+      </section>
     </div>
   );
 }

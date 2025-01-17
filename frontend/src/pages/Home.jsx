@@ -80,7 +80,7 @@ const Home = () => {
                 {/* below Thumbail */}
                 <div className='flex mt-2 '>
                   {/* logo */}
-                  <div className='rounded-full  mx-2'>
+                  <div onClick={()=>{navigate(`/u/${video.UserId._id}`)}} className='rounded-full  mx-2'>
                     <img className='object-cover h-9 w-9 rounded-full' src={video.UserId.LogoUrl} alt="" />
                   </div>
                   {/* Title */}

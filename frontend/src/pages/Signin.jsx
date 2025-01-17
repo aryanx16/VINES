@@ -21,25 +21,26 @@ const Signin = () => {
     const formdata = new FormData();
     formdata.append("Email", email)
     formdata.append("Password", password)
-    try{
+    try {
 
       axios.post(`${BACKEND_URL}/user/login`, formdata).then((response) => {
         toast.success(response.data.message)
-        // console.log(response)
-        localStorage.setItem("token",response.data.token)
-      localStorage.setItem("logoUrl",response.data.logoUrl)
-      localStorage.setItem("channelName",response.data.channelName)
-      // localStorage.setItem("userId",response)
-      navigate("/home")
-      console.log(response)
-    })
-      .catch((e) => {
-        console.log(e)
-        console.log("IN CSTCHHHHh")
-        setloading(false)
-        toast.error(e.response?.data?.message || "Please try again")
+        console.log(response)
+        localStorage.setItem("token", response.data.token)
+        localStorage.setItem("logoUrl", response.data.logoUrl)
+        localStorage.setItem("channelName", response.data.channelName)
+        localStorage.setItem("userid", response.data.userId)
+        // localStorage.setItem("userId",response)
+        navigate("/home")
+        console.log(response)
       })
-    }catch(e){
+        .catch((e) => {
+          console.log(e)
+          console.log("IN CSTCHHHHh")
+          setloading(false)
+          toast.error(e.response?.data?.message || "Please try again")
+        })
+    } catch (e) {
       toast.error("Please try again!")
       setloading(false)
     }
@@ -70,7 +71,7 @@ const Signin = () => {
                       />}
                     </div>
                   </button>
-                  <div className=" flex justify-center">Create new account? <Link className="font-semibold hover:text-slate-200 ml-1" to={"/signup"}> Signup </Link></div>
+                  <div className=" flex justify-center border border-neutral-700 p-2 m-2 rounded-md text-neutral-300 bg-neutral-800" >Don't have an account? <Link className="text-blue-500  hover:text-slate-200 ml-1" to={"/signup"}> Create an account </Link></div>
                 </div>
               </div>
             </form>

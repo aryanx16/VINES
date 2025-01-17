@@ -17,6 +17,7 @@ const Navbar = () => {
     const location = useLocation()
     // console.log(location.pathname === '/home')
     const logoUrl = localStorage.getItem("logoUrl")
+    const userid = localStorage.getItem("userid")
     const channelName = localStorage.getItem("channelName");
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -108,8 +109,8 @@ const Navbar = () => {
                                     </svg>
             
                                 ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                                     </svg>
             
                                 )}Home</li>
@@ -256,7 +257,7 @@ const Navbar = () => {
                                     />
                                 </svg> */}
                                 {logoUrl?
-                                <img src={logoUrl} className='h-9 w-9 border border-neutral-400 rounded-full' alt="" />
+                                <img onClick={()=>{navigate(`/u/${userid}`)}} src={logoUrl} className='h-9 w-9 border border-neutral-400 rounded-full' alt="" />
                                 :
                                 <img src="https://cdn3d.iconscout.com/3d/premium/thumb/user-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--account-avatar-people-business-pack-finance-illustrations-4280969.png?f=webp" className='h-9 w-9 border-2 rounded-full border-blue-300' alt="" />
                             }
