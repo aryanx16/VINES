@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { motion } from 'framer-motion'
-import SideMenu from './SideMenu';
+import toast from 'react-hot-toast'
 import axios from 'axios';
 import { useSearch } from '../context/SearchBarContext';
 
@@ -259,7 +258,7 @@ const Navbar = () => {
                                 {logoUrl?
                                 <img onClick={()=>{navigate(`/u/${userid}`)}} src={logoUrl} className='h-9 w-9 border border-neutral-400 rounded-full' alt="" />
                                 :
-                                <img src="https://cdn3d.iconscout.com/3d/premium/thumb/user-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--account-avatar-people-business-pack-finance-illustrations-4280969.png?f=webp" className='h-9 w-9 border-2 rounded-full border-blue-300' alt="" />
+                                <img onClick={()=>{navigate('/signin')}} src="https://cdn3d.iconscout.com/3d/premium/thumb/user-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--account-avatar-people-business-pack-finance-illustrations-4280969.png?f=webp" className='h-9 w-9 border-2 rounded-full border-blue-300' alt="" />
                             }
                             </div>
                         )}

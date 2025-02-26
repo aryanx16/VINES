@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { Hourglass } from 'react-loader-spinner'
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import axios from 'axios'
-import { Upload } from 'lucide-react'
+import toast from 'react-hot-toast'
 import { useSearch } from '../context/SearchBarContext'
 
 const UploadVid = () => {
@@ -83,8 +82,8 @@ const UploadVid = () => {
                 setVideo(e.target.files[0])
                 console.log(e)
                 setVideourl(URL.createObjectURL(e.target.files[0]))
-                if (filesize > 40 * 1024 * 1024) {
-                    toast.info("Please select a video less than 4mb")
+                if (filesize > 400 * 1024 * 1024) {
+                    toast.info("Please select a video less than 40mb")
                     setVideourl("")
                     setVideo("")
                 }

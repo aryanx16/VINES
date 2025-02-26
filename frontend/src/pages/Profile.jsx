@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import toast from 'react-hot-toast'
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 

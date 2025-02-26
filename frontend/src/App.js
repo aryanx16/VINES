@@ -4,9 +4,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import {  Toaster } from 'react-hot-toast'
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import UploadVid from './pages/UploadVid';
@@ -51,7 +51,7 @@ function App() {
 
     <RouterProvider router={router}>
     </RouterProvider>
-    <ToastContainer />
+    <Toaster position="bottom-center"/>
    </SearchProvider>
    </>
   );

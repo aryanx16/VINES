@@ -1,4 +1,4 @@
-import { toast } from "react-toastify"
+import toast from 'react-hot-toast'
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";

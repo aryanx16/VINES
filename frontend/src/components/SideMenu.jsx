@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { House } from 'lucide-react';
 import { motion } from 'framer-motion'
+import toast from 'react-hot-toast'
+
 
 const SideMenu = () => {
     const [sidebar, setSidebar] = useState(false);

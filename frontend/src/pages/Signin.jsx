@@ -1,5 +1,5 @@
-import { toast } from "react-toastify"
 import { useState } from "react";
+import toast from 'react-hot-toast'
 import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
@@ -71,7 +71,7 @@ const Signin = () => {
                       />}
                     </div>
                   </button>
-                  <div className=" flex justify-center border border-neutral-700 p-2 m-2 rounded-md text-neutral-300 bg-neutral-800" >Don't have an account? <Link className="text-blue-500  hover:text-slate-200 ml-1" to={"/signup"}> Create an account </Link></div>
+                  <div className=" flex justify-center border border-neutral-700 p-1 mt-2 rounded-md text-neutral-300 bg-neutral-800" >Don't have an account? <Link className="text-blue-500  hover:text-slate-200 " to={"/signup"}> Create an account </Link></div>
                 </div>
               </div>
             </form>
