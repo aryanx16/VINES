@@ -1,4 +1,4 @@
-const express = require("express")
+// const express = require("express")
 const CheckAuth = require("../middleware/CheckAuth")
 const cloudinary = require("cloudinary").v2
 const jwt = require('jsonwebtoken')
