@@ -21,6 +21,8 @@ const UploadVid = () => {
     const [thumbnailUrl, setThumbnailUrl] = useState("")
     async function handleSubmit(e) {
         e.preventDefault();
+        toast.error("Video uploading is currently disabled by owner due to high maintenance costs.");
+        return ;
         setLoading(true);
         if (!thumbnailUrl) {
             toast.info("Please select a Thumbnail!")
@@ -129,7 +131,7 @@ const UploadVid = () => {
                                 <input id="video" onChange={handlevideo} accept="video/*" className="bg-secondary hidden  border-bordcol border shadow-2xl rounded-md p-1 " type="file" />
                             </div>
                             <div>
-                                <button type="submit" className="bg-white  text-black font-semibold  border-bordcol border shadow-2xl rounded-md p-1 w-80 sm:w-[500px] hover:bg-slate-200 transition-all duration-200"><div className="flex justify-center items-center gap-2"> {loading ? "Uploading" : "Upload"}
+                                <button  type="submit" className="bg-white  text-black font-semibold  border-bordcol border shadow-2xl rounded-md p-1 w-80 sm:w-[500px] hover:bg-slate-200 transition-all duration-200"><div className="flex justify-center items-center gap-2"> {loading ? "Uploading" : "Upload"}
                                     {loading && <Hourglass
                                         visible={true}
                                         height="20"
@@ -139,8 +141,13 @@ const UploadVid = () => {
                                         wrapperClass=""
                                         colors={['#000000', '#000000']}
                                     />}
-                                </div></button>
+                                </div>
+                                </button>
                                 {<div className="flex justify-center items-center"></div>}
+                                <div className='text-sm text-neutral-400 flex justify-center items-center'>
+                                    (Video uploading is currently disabled due to high maintenance costs.)
+                                    </div>
+
                             </div>
                         </div>
                     </form>

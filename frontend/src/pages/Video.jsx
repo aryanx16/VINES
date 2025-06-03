@@ -290,7 +290,7 @@ const Video = () => {
                             <div className='flex gap-1 my-2 flex-shrink-0'>
                               {/* logo */}
                               <div onClick={()=>{navigate(`/u/${comment.UserId._id}`)}} className='w-11 cursor-pointer h-11  flex-shrink-0'>
-                                <img src={comment.UserId.LogoUrl} className='w-11 h-11 rounded-full' alt="" />
+                                <img src={comment.UserId?.LogoUrl} className='w-11 h-11 rounded-full' alt="" />
                               </div>
                               <div>
                                 {/* chnl name */}
@@ -322,7 +322,7 @@ const Video = () => {
                         <div className='flex gap-1 my-2 flex-shrink-0'>
                           {/* logo */}
                           <div onClick={()=>{navigate(`/u/${comment.UserId._id}`)}} className='w-11 cursor-pointer h-11  flex-shrink-0'>
-                            <img src={comment.UserId.LogoUrl} className='w-11 h-11 rounded-full' alt="" />
+                            <img src={comment.UserId?.LogoUrl} className='w-11 h-11 rounded-full' alt="" />
                           </div>
                           <div>
                             {/* chnl name */}

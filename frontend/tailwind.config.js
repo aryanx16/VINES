@@ -6,6 +6,11 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
+                marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' }, // Move left by 50%
+        },
+
         scroll: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-100%)' },
@@ -33,6 +38,7 @@ module.exports = {
         },
       },
       animation: {
+        marquee: 'marquee 20s linear infinite',
         floating: 'floating 3s ease-in-out infinite',
         scroll: 'scroll 20s linear infinite',
           shine: 'shine 5s linear infinite',
