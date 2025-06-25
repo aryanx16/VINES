@@ -253,7 +253,7 @@ const Video = () => {
                   </div>
                   <div className='flex gap-1 mt-2 '>
                     <div>
-                      <img onClick={()=>{navigate(`/u/${video.UserId._id}`)}} className='w-10  rounded-full' src={logourl} alt="" />
+                      <img onClick={()=>{navigate(`/u/${video.UserId._id}`)}} className='w-10 h-10   rounded-full' src={logourl} alt="" />
                     </div>
                     <div className='w-full'>
                       <div className=' mb-5'>
