@@ -37,7 +37,7 @@ const About = () => {
                         animationSpeed={5}
                         className="custom-class font-extrabold font-sans text-6xl md:text-9xl"
                     >
-                        Share Your Videos with the World
+                        Share Your Videos with the World!
                     </GradientText>
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-200 mb-8">
