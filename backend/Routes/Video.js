@@ -311,11 +311,12 @@ VideoRouter.get("/all", async (req, res) => {
         const cachedVideos = await redisclient.get(cachekey);
         if (cachedVideos) {
             console.log("🟢 Serving from Redis Cache");
-            return res.json(JSON.parse(cachedVideos))
+            // console.log(JSON.parse(cachedVideos))
+            return res.send(JSON.parse(cachedVideos))
         }
         console.log("🔵 Fetching from MongoDB");
         const AllVideos = await Video.find({}).populate('UserId')
-
+        // console.log(AllVideos)
         await redisclient.setEx(cachekey, 600, JSON.stringify(AllVideos))
         res.send(AllVideos)
     }

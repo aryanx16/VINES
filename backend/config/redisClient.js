@@ -19,6 +19,7 @@ async function connectRedis() {
     await redisclient.connect();
     console.log("✅ Connected to Redis Cloud");
   }
+  
 }
 
 module.exports = { redisclient, connectRedis };
