@@ -7,6 +7,7 @@ const userRouter = require("./Routes/User")
 const VideoRouter = require("./Routes/Video")
 const CommentRouter = require("./Routes/Comment")
 const cors = require("cors")
+const { connectRedis } = require("./config/redisClient")
 const app = express()
 
 app.use(cors())
@@ -21,6 +22,7 @@ app.use(fileUpload({
     tempFileDir : '/tmp/',
     limits: { fileSize: 50 * 1024 * 1024 }
 }));
+connectRedis();
 //----------------USER MIDDLEWARE--------------
 app.use("/user",userRouter)
 //----------------VIDEO MIDDLEWARE--------------
